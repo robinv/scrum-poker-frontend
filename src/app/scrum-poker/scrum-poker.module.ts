@@ -5,12 +5,16 @@ import { ScrumPokerComponent } from './scrum-poker.component';
 import { OverviewComponent } from './overview/overview.component';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { UserCreationService } from './shared/user-creation.service';
+import { UserCreationService } from './user-creation/user-creation.service';
+import { UserCreationComponent } from './user-creation/user-creation.component';
+import { LoginGuard } from './shared/login.guard';
+import { LogoutGuard } from './shared/logout.guard';
 
 @NgModule({
     declarations: [
         ScrumPokerComponent,
-        OverviewComponent
+        OverviewComponent,
+        UserCreationComponent
     ],
     imports: [
         BrowserModule,
@@ -18,7 +22,9 @@ import { UserCreationService } from './shared/user-creation.service';
         RouterModule
     ],
     providers: [
-        UserCreationService
+        UserCreationService,
+        LoginGuard,
+        LogoutGuard
     ],
     bootstrap: [ScrumPokerComponent]
 })
