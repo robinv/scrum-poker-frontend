@@ -9,10 +9,8 @@ export class ScrumPokerComponent implements OnDestroy, OnInit {
     constructor() {}
 
     public ngOnInit(): void {
-        console.log('scrum init');
     }
 
     public ngOnDestroy(): void {
-        console.log('scrum destroy');
     }
 }

@@ -29,9 +29,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
             this.userCreationService
                 .create(this.name, this.password)
                 .subscribe(response => {
-                    console.log({response});
                 }, error => {
-                    console.log({error});
                 })
         );
     }
