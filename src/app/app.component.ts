@@ -17,11 +17,11 @@ export class AppComponent implements OnInit {
     ) {}
 
     public ngOnInit(): void {
-        this.webSocketService.getObserver('disconnect').subscribe(() => {
+        this.webSocketService.getObservable('disconnect').subscribe(() => {
             this.router.navigate(['']);
         });
 
-        this.webSocketService.getObserver('connect').subscribe(() => {
+        this.webSocketService.getObservable('connect').subscribe(() => {
             this.router.navigate(['dashboard']);
         });
     }

@@ -20,7 +20,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.subscription.add(
             this.webSocketService
-                .getObserver('user.create.response')
+                .getObservable('user.create.response')
                 .subscribe((response: any) => {
                 if (response.status === 200) {
                     this.users.push(response.message.id);

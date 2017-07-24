@@ -7,11 +7,11 @@ import { Observable } from 'rxjs/Observable';
 @Injectable()
 export class WebSocketService implements OnDestroy {
     private socket: SocketIOClient.Socket;
-    private observers: Map<String, Observable<any>>;
+    private observables: Map<String, Observable<any>>;
 
     constructor() {
         this.socket = io.connect(environment.webSocket.url);
-        this.observers = new Map();
+        this.observables = new Map();
     }
 
     public ngOnDestroy(): void {
@@ -22,15 +22,16 @@ export class WebSocketService implements OnDestroy {
         return this.socket.connected;
     }
 
-    public getObserver(event: string): Observable<any> {
-        if (!this.observers.has(event)) {
-            return new Observable(observer => {
+    public getObservable(event: string): Observable<any> {
+        if (!this.observables.has(event)) {
+            const observable = new Observable(observer => {
                 this.socket.on(event, (response) => {
                     observer.next(response);
                 });
             });
+            this.observables.set(event, observable);
         }
-        return this.observers.get(event);
+        return this.observables.get(event);
     }
 
     public emit(event: string, message: any): void {
