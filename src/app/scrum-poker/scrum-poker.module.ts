@@ -1,12 +1,11 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
-
 import { ScrumPokerComponent } from './scrum-poker.component';
-import { OverviewComponent } from './pages/overview.component';
+import { OverviewComponent } from './overview/overview.component';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { WebSocketService } from '../providers/web-socket.service';
+import { UserCreationService } from './shared/user-creation.service';
 
 @NgModule({
     declarations: [
@@ -18,7 +17,9 @@ import { WebSocketService } from '../providers/web-socket.service';
         FormsModule,
         RouterModule
     ],
-    providers: [WebSocketService],
+    providers: [
+        UserCreationService
+    ],
     bootstrap: [ScrumPokerComponent]
 })
 

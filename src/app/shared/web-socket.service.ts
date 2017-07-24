@@ -23,6 +23,7 @@ export class WebSocketService implements OnDestroy {
     }
 
     public getObservable(event: string): Observable<any> {
+        console.log(event);
         if (!this.observables.has(event)) {
             const observable = new Observable(observer => {
                 this.socket.on(event, (response) => {

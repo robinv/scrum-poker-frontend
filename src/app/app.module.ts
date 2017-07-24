@@ -3,9 +3,9 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { WebSocketService } from './providers/web-socket.service';
-import { ConnectGuard } from './providers/connect-guard.service';
-import { ConnectComponent } from './pages/connect.component';
+import { WebSocketService } from './shared/web-socket.service';
+import { ConnectGuard } from './shared/connect-guard.service';
+import { ConnectComponent } from './connect/connect.component';
 import { ScrumPokerModule } from './scrum-poker/scrum-poker.module';
 
 @NgModule({
@@ -18,7 +18,10 @@ import { ScrumPokerModule } from './scrum-poker/scrum-poker.module';
         AppRoutingModule,
         ScrumPokerModule
     ],
-    providers: [WebSocketService, ConnectGuard],
+    providers: [
+        WebSocketService,
+        ConnectGuard
+    ],
     bootstrap: [AppComponent]
 })
 

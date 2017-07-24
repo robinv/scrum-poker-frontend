@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ConnectComponent } from './pages/connect.component';
+import { ConnectComponent } from './connect/connect.component';
 import { ScrumPokerComponent } from './scrum-poker/scrum-poker.component';
-import { OverviewComponent } from './scrum-poker/pages/overview.component';
-import { ConnectGuard } from './providers/connect-guard.service';
+import { OverviewComponent } from './scrum-poker/overview/overview.component';
+import { ConnectGuard } from './shared/connect-guard.service';
 
 const routes: Routes = [
     {
