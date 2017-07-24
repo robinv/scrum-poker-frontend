@@ -8,7 +8,7 @@ import { UserCreationService } from './user-creation.service';
 })
 
 export class UserCreationComponent implements OnDestroy, OnInit {
-    private subscription: Subscription = new Subscription();
+    private createSubscription: Subscription = new Subscription();
     public name: String = '';
     public password: String = '';
 
@@ -19,16 +19,15 @@ export class UserCreationComponent implements OnDestroy, OnInit {
     }
 
     ngOnDestroy(): void {
-        this.subscription.unsubscribe();
+        this.createSubscription.unsubscribe();
     }
 
     public createUser() {
-        this.subscription.add(
-            this.userCreationService
+            this.createSubscription = this.userCreationService
                 .create(this.name, this.password)
                 .subscribe(userId => {
                     console.log(`User Created with ID: ${userId}`);
-                })
-        );
+                    this.createSubscription.unsubscribe();
+                });
     }
 }
