@@ -1,14 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { WebSocketService } from '../providers/web-socket.service';
+import { WebSocketService } from '../../providers/web-socket.service';
 import { Subscription } from 'rxjs/Subscription';
-import { Observable } from 'rxjs/Observable';
 
 @Component({
-    selector: 'app-dashboard',
-    templateUrl: './dashboard.component.html'
+    selector: 'app-scrum-poker-overview',
+    templateUrl: './overview.component.html'
 })
 
-export class DashboardComponent implements OnInit, OnDestroy {
+export class OverviewComponent implements OnInit, OnDestroy {
     private subscription: Subscription = new Subscription();
 
     public users: String[] = [];
@@ -22,10 +21,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
             this.webSocketService
                 .getObservable('user.create.response')
                 .subscribe((response: any) => {
-                if (response.status === 200) {
-                    this.users.push(response.message.id);
-                }
-            })
+                    if (response.status === 200) {
+                        this.users.push(response.message.id);
+                    }
+                })
         );
     }
 

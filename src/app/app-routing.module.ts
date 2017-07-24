@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ConnectGuard } from './providers/connect-guard.service';
-import { DashboardComponent } from './pages/dashboard.component';
 import { ConnectComponent } from './pages/connect.component';
+import { ScrumPokerComponent } from './scrum-poker/scrum-poker.component';
+import { OverviewComponent } from './scrum-poker/pages/overview.component';
+import { ConnectGuard } from './providers/connect-guard.service';
 
 const routes: Routes = [
     {
@@ -10,9 +11,15 @@ const routes: Routes = [
        component: ConnectComponent
     },
     {
-        path: 'dashboard',
-        component: DashboardComponent,
-        canActivate: [ConnectGuard]
+        path: 'scrum-poker',
+        component: ScrumPokerComponent,
+        canActivateChild: [ConnectGuard],
+        children: [
+            {
+                path: '',
+                component: OverviewComponent
+            }
+        ]
     }
 ];
 

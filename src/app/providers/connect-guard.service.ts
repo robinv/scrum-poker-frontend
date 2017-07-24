@@ -1,13 +1,17 @@
 import { Injectable } from '@angular/core';
-import { CanActivate } from '@angular/router';
+import { CanActivate, CanActivateChild } from '@angular/router';
 import { WebSocketService } from './web-socket.service';
 
 @Injectable()
-export class ConnectGuard implements CanActivate {
+export class ConnectGuard implements CanActivate, CanActivateChild {
 
     constructor(public webSocketService: WebSocketService) {}
 
-    canActivate(): boolean {
+    public canActivate(): boolean {
+        return this.webSocketService.isConnected();
+    }
+
+    public canActivateChild(): boolean {
         return this.webSocketService.isConnected();
     }
 }

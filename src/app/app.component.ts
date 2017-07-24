@@ -22,7 +22,7 @@ export class AppComponent implements OnInit {
         });
 
         this.webSocketService.getObservable('connect').subscribe(() => {
-            this.router.navigate(['dashboard']);
+            this.router.navigate(['scrum-poker']);
         });
     }
 }
