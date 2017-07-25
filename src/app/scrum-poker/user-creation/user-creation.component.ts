@@ -1,6 +1,8 @@
+import 'rxjs/add/operator/takeUntil';
+
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
 import { UserCreationService } from './user-creation.service';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
     selector: 'app-scrum-poker-user-creation',
@@ -8,7 +10,7 @@ import { UserCreationService } from './user-creation.service';
 })
 
 export class UserCreationComponent implements OnDestroy, OnInit {
-    private createSubscription: Subscription = new Subscription();
+    private ngUnSubscribe: Subject<void> = new Subject<void>();
     public name: String = '';
     public password: String = '';
 
@@ -19,15 +21,19 @@ export class UserCreationComponent implements OnDestroy, OnInit {
     }
 
     ngOnDestroy(): void {
-        this.createSubscription.unsubscribe();
+        this.ngUnSubscribe.next();
+        this.ngUnSubscribe.complete();
     }
 
     public createUser() {
-            this.createSubscription = this.userCreationService
+            this.ngUnSubscribe = new Subject<void>();
+            this.userCreationService
                 .create(this.name, this.password)
+                .takeUntil(this.ngUnSubscribe)
                 .subscribe(userId => {
                     console.log(`User Created with ID: ${userId}`);
-                    this.createSubscription.unsubscribe();
+                    this.ngUnSubscribe.next();
+                    this.ngUnSubscribe.complete();
                 });
     }
 }

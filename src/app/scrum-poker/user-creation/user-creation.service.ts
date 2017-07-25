@@ -1,20 +1,23 @@
+import 'rxjs/add/operator/takeUntil';
+
 import { Injectable, OnDestroy } from '@angular/core';
 import { WebSocketService } from '../../shared/web-socket.service';
-import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
 
 @Injectable()
 export class UserCreationService implements OnDestroy {
-    private subscription: Subscription = new Subscription();
+    private ngUnSubscribe: Subject<void> = new Subject<void>();
     private observable: Observable<String>;
 
     constructor(private webSocketService: WebSocketService) {
         this.observable = new Observable(observer => {
-            this.subscription = this.webSocketService
+            this.webSocketService
                 .getObservable('user.create.response')
+                .takeUntil(this.ngUnSubscribe)
                 .subscribe(response => {
                     if (!Object.is(response.status, 200)) {
-                        console.error(response);
+                        observer.error(response.message);
                         return;
                     }
                     observer.next(response.message.id);
@@ -25,7 +28,8 @@ export class UserCreationService implements OnDestroy {
     }
 
     public ngOnDestroy(): void {
-        this.subscription.unsubscribe();
+        this.ngUnSubscribe.next();
+        this.ngUnSubscribe.complete();
     }
 
     public create(name: String, password: String): Observable<String> {
