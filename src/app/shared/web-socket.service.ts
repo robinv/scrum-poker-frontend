@@ -35,7 +35,11 @@ export class WebSocketService implements OnDestroy {
         return this.observables.get(event);
     }
 
-    public emit(event: string, message: any): void {
-        this.socket.emit(event, message);
+    public emit(event: string, message: any, onSuccess?: Function): void {
+        this.socket.emit(event, message, function(response) {
+            if (onSuccess) {
+                onSuccess(response);
+            }
+        });
     }
 }
