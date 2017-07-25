@@ -9,12 +9,16 @@ import { UserCreationService } from './user-creation/user-creation.service';
 import { UserCreationComponent } from './user-creation/user-creation.component';
 import { LoginGuard } from './shared/login.guard';
 import { LogoutGuard } from './shared/logout.guard';
+import { AuthService } from './shared/auth.service';
+import { LoginComponent } from './login/login/login.component';
+import { LoginService } from './login/login/login.service';
 
 @NgModule({
     declarations: [
         ScrumPokerComponent,
         OverviewComponent,
-        UserCreationComponent
+        UserCreationComponent,
+        LoginComponent
     ],
     imports: [
         BrowserModule,
@@ -23,6 +27,8 @@ import { LogoutGuard } from './shared/logout.guard';
     ],
     providers: [
         UserCreationService,
+        AuthService,
+        LoginService,
         LoginGuard,
         LogoutGuard
     ],

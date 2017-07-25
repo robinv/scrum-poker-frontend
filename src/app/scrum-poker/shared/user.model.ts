@@ -6,4 +6,12 @@ export class User {
         this.id = id;
         this.name = name;
     }
+
+    public getId(): String {
+        return this.id;
+    }
+
+    public getName(): String {
+        return this.name;
+    }
 }

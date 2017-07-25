@@ -24,9 +24,11 @@ export class UserCreationService implements OnDestroy {
             }, response => {
                 if (!Object.is(response.status, 200)) {
                     observer.error(response.message);
+                    observer.complete();
                     return;
                 }
                 observer.next(response.message.id);
+                observer.complete();
             });
         });
     }

@@ -1,5 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { UserCreationService } from './user-creation.service';
+import { User } from '../shared/user.model';
+import { AuthService } from '../shared/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-scrum-poker-user-creation',
@@ -10,7 +13,11 @@ export class UserCreationComponent implements OnDestroy, OnInit {
     public name: String = '';
     public password: String = '';
 
-    constructor(private userCreationService: UserCreationService) {}
+    constructor(
+        private userCreationService: UserCreationService,
+        private authService: AuthService,
+        private router: Router
+    ) {}
 
     ngOnInit(): void {
 
@@ -23,7 +30,9 @@ export class UserCreationComponent implements OnDestroy, OnInit {
         this.userCreationService
             .create(this.name, this.password)
             .subscribe(userId => {
-                console.log(`User Created with ID: ${userId}`);
+                const user: User = new User(userId, this.name);
+                this.authService.setUser(user);
+                this.router.navigate(['scrum-poker']);
             });
     }
 }

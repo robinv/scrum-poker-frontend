@@ -7,6 +7,7 @@ import { ConnectGuard } from './shared/connect-guard.service';
 import { UserCreationComponent } from './scrum-poker/user-creation/user-creation.component';
 import { LogoutGuard } from './scrum-poker/shared/logout.guard';
 import { LoginGuard } from './scrum-poker/shared/login.guard';
+import { LoginComponent } from './scrum-poker/login/login/login.component';
 
 const routes: Routes = [
     {
@@ -21,6 +22,11 @@ const routes: Routes = [
             {
                 path: 'signup',
                 component: UserCreationComponent,
+                canActivate: [LogoutGuard]
+            },
+            {
+                path: 'login',
+                component: LoginComponent,
                 canActivate: [LogoutGuard]
             },
             {
