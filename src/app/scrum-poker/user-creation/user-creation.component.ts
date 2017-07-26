@@ -28,7 +28,10 @@ export class UserCreationComponent implements OnDestroy, OnInit {
 
     public createUser() {
         this.userCreationService
-            .create(this.name, this.password)
+            .create(
+                this.name,
+                this.authService.getEncryptedPassword(this.name, this.password)
+            )
             .subscribe(userId => {
                 const user: User = new User(userId, this.name);
                 this.authService.setUser(user);

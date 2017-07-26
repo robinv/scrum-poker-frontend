@@ -1,7 +1,7 @@
+import * as crypto from 'crypto-js';
 import { Injectable } from '@angular/core';
 import { User } from './user.model';
 import { WebSocketService } from '../../shared/web-socket.service';
-import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class AuthService {
@@ -24,5 +24,9 @@ export class AuthService {
 
     public setUser(user: User): void {
         this.user = user;
+    }
+
+    public getEncryptedPassword(name: String, password: String): String {
+        return crypto.SHA256(`${name}${password}`).toString();
     }
 }
