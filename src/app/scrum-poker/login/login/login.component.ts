@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
     templateUrl: './login.component.html'
 })
 export class LoginComponent {
-    public id: String = '';
+    public name: String = '';
     public password: String = '';
 
     constructor(
@@ -20,13 +20,11 @@ export class LoginComponent {
 
     public login(): void {
         this.loginService
-            .login(this.id, this.password)
-            .subscribe(isLoggedIn => {
-                if (isLoggedIn) {
-                    const user: User = new User(this.id, this.id);
-                    this.authService.setUser(user);
-                    this.router.navigate(['scrum-poker']);
-                }
+            .login(this.name, this.password)
+            .subscribe(userId => {
+                const user: User = new User(userId, this.name);
+                this.authService.setUser(user);
+                this.router.navigate(['scrum-poker']);
             })
     }
 }

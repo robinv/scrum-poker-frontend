@@ -9,12 +9,12 @@ export class LoginService {
         private webSocketService: WebSocketService
     ) {}
 
-    public login(id: String, password: String): Observable<any> {
+    public login(name: String, password: String): Observable<String> {
         return new Observable(observer => {
             this.webSocketService.emit(
                 'user.join',
                 {
-                    id,
+                    name,
                     password
                 },
                 response => {
@@ -23,7 +23,7 @@ export class LoginService {
                         observer.complete();
                         return;
                     }
-                    observer.next(true);
+                    observer.next(response.message.id);
                     observer.complete();
                 }
             );
