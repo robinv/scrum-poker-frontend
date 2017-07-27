@@ -12,6 +12,7 @@ import { LogoutGuard } from './shared/logout.guard';
 import { AuthService } from './shared/auth.service';
 import { LoginComponent } from './login/login/login.component';
 import { LoginService } from './login/login/login.service';
+import { UserListService } from './shared/user-list.service';
 
 @NgModule({
     declarations: [
@@ -29,6 +30,7 @@ import { LoginService } from './login/login/login.service';
         UserCreationService,
         AuthService,
         LoginService,
+        UserListService,
         LoginGuard,
         LogoutGuard
     ],

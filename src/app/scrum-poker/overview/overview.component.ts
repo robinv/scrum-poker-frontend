@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { UserListService } from '../shared/user-list.service';
 
 @Component({
     selector: 'app-scrum-poker-overview',
@@ -6,4 +7,8 @@ import { Component } from '@angular/core';
 })
 
 export class OverviewComponent {
+
+    constructor(
+        public userListService: UserListService
+    ) {}
 }
