@@ -1,17 +1,16 @@
 export class User {
-    private id: String;
-    private name: String;
+    private _id: String;
+    private _name: String;
 
     constructor(id: String, name: String) {
-        this.id = id;
-        this.name = name;
+        this._id = id;
+        this._name = name;
     }
 
-    public getId(): String {
-        return this.id;
+    get id(): String {
+        return this._id;
     }
-
-    public getName(): String {
-        return this.name;
+    get name(): String {
+        return this._name;
     }
 }

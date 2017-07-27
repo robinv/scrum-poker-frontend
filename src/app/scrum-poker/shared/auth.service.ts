@@ -1,32 +1,31 @@
-import * as crypto from 'crypto-js';
 import { Injectable } from '@angular/core';
 import { User } from './user.model';
-import { WebSocketService } from '../../shared/web-socket.service';
+import { Resettable } from '../../shared/reset.interface';
 
 @Injectable()
-export class AuthService {
-    private user: User;
+export class AuthService implements Resettable {
+    private _user: User;
 
-    constructor(
-        private webSocketService: WebSocketService
-    ) {}
+    constructor() {}
+
+    get user(): User {
+        return this._user;
+    }
+
+    set user(user: User) {
+        this._user = user;
+    }
 
     public isLoggedIn(): Boolean {
-        if (!this.user) {
+        if (!this._user) {
             return false;
         }
         return true;
     }
 
-    public getUser(): User {
-        return this.user;
+    reset(): void {
+        delete this._user;
     }
 
-    public setUser(user: User): void {
-        this.user = user;
-    }
 
-    public getEncryptedPassword(name: String, password: String): String {
-        return crypto.SHA256(`${name}${password}`).toString();
-    }
 }

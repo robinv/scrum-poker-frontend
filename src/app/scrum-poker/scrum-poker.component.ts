@@ -10,8 +10,14 @@ export class ScrumPokerComponent implements OnDestroy, OnInit {
     constructor(public authService: AuthService) {}
 
     public ngOnInit(): void {
+        this._resetServices();
     }
 
     public ngOnDestroy(): void {
+        this._resetServices();
+    }
+
+    private _resetServices(): void {
+        this.authService.reset();
     }
 }

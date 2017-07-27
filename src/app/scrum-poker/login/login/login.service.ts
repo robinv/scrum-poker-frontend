@@ -1,14 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { WebSocketService } from '../../../shared/web-socket.service';
-import { AuthService } from '../../shared/auth.service';
 
 @Injectable()
 export class LoginService {
 
     constructor(
-        private webSocketService: WebSocketService,
-        private authService: AuthService
+        private webSocketService: WebSocketService
     ) {}
 
     public login(name: String, password: String): Observable<String> {
@@ -17,7 +15,7 @@ export class LoginService {
                 'user.join',
                 {
                     name,
-                    password: this.authService.getEncryptedPassword(name, password)
+                    password: password
                 },
                 response => {
                     if (!Object.is(response.status, 200)) {

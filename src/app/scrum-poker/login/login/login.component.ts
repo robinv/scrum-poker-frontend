@@ -23,7 +23,7 @@ export class LoginComponent {
             .login(this.name, this.password)
             .subscribe(userId => {
                 const user: User = new User(userId, this.name);
-                this.authService.setUser(user);
+                this.authService.user = user;
                 this.router.navigate(['scrum-poker']);
             });
     }
