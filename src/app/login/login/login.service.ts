@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { WebSocketService } from '../../../shared/web-socket.service';
+import { WebSocketService } from '../../scrum-poker/shared/web-socket.service';
 
 @Injectable()
 export class LoginService {

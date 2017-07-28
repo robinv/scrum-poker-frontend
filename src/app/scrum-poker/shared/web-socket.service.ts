@@ -1,9 +1,10 @@
 import 'rxjs/add/operator/takeUntil';
 
-import { Injectable, OnDestroy } from '@angular/core';
-import { environment } from '../../environments/environment';
 import * as io from 'socket.io-client';
+
+import { Injectable, OnDestroy } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { environment } from '../../../environments/environment';
 
 @Injectable()
 export class WebSocketService implements OnDestroy {
@@ -11,16 +12,18 @@ export class WebSocketService implements OnDestroy {
     private observables: Map<String, Observable<any>>;
 
     constructor() {
+    }
+
+    public connect(): void {
         this.socket = io.connect(environment.webSocket.url);
         this.observables = new Map();
     }
 
     public ngOnDestroy(): void {
-        this.socket.disconnect();
     }
 
     public isConnected(): boolean {
-        return this.socket.connected;
+        return this.socket && this.socket.connected;
     }
 
     public getObservable(event: string): Observable<any> {

@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { AuthService } from './shared/auth.service';
+import { AuthService } from '../shared/auth.service';
 import { UserListService } from './shared/user-list.service';
 
 @Component({

@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { LoginService } from './login.service';
-import { AuthService } from '../../shared/auth.service';
-import { User } from '../../shared/user.model';
 import { Router } from '@angular/router';
+import { User } from '../../scrum-poker/shared/user.model';
+import { AuthService } from '../../shared/auth.service';
 
 @Component({
     selector: 'app-scrum-poker-login',

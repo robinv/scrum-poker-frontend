@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { UserCreationService } from './user-creation.service';
-import { User } from '../shared/user.model';
+import { User } from '../scrum-poker/shared/user.model';
 import { AuthService } from '../shared/auth.service';
 import { Router } from '@angular/router';
 

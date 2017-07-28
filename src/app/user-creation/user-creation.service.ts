@@ -1,7 +1,7 @@
 import 'rxjs/add/operator/takeUntil';
 
 import { Injectable, OnDestroy } from '@angular/core';
-import { WebSocketService } from '../../shared/web-socket.service';
+import { WebSocketService } from '../scrum-poker/shared/web-socket.service';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 
