@@ -5,13 +5,13 @@ import { WebSocketService } from '../../shared/web-socket.service';
 
 @Injectable()
 export class UserListService implements Resettable {
-    private _users: Set<User> = new Set();
+    private _users: User[] = [];
 
     constructor(private webSocketService: WebSocketService) {
         this._initEventHandling();
     }
 
-    get users(): Set<User> {
+    get users(): User[] {
         return this._users;
     }
 
@@ -19,17 +19,21 @@ export class UserListService implements Resettable {
         this.webSocketService
             .getObservable('user.joined')
             .subscribe(item => {
-                const user: User = new User(item.id, item.name);
-                if (this._users.has(user)) {
-                    this._users.add(user);
+                let existingUser = this._users.find(user => {
+                    return Object.is(item.id, user.id);
+                });
+                if (!existingUser) {
+                    const user: User = new User(item.id, item.name);
+                    this._users.push(user);
                 }
             });
 
         this.webSocketService
             .getObservable('user.left')
             .subscribe(item => {
-                const user: User = new User(item.id, item.name);
-                this._users.delete(user);
+                this._users = this._users.filter(user => {
+                    return !Object.is(item.id, user.id);
+                });
             });
     }
 
@@ -45,6 +49,6 @@ export class UserListService implements Resettable {
     }
 
     reset(): void {
-        this._users.clear();
+        this._users = [];
     }
 }
