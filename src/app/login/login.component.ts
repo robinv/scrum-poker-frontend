@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { LoginService } from './login.service';
 import { Router } from '@angular/router';
-import { User } from '../../scrum-poker/shared/user.model';
-import { AuthService } from '../../shared/auth.service';
+import { AuthService } from '../shared/auth.service';
 
 @Component({
     selector: 'app-scrum-poker-login',
@@ -21,10 +20,11 @@ export class LoginComponent {
     public login(): void {
         this.loginService
             .login(this.name, this.password)
-            .subscribe(userId => {
-                const user: User = new User(userId, this.name);
-                this.authService.user = user;
+            .subscribe(response => {
+                this.authService.token = response;
                 this.router.navigate(['scrum-poker']);
+            }, error => {
+                console.log({error});
             });
     }
 }

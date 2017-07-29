@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from '../shared/auth.service';
-import { UserListService } from './shared/user-list.service';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-scrum-poker',
@@ -10,19 +10,17 @@ import { UserListService } from './shared/user-list.service';
 export class ScrumPokerComponent implements OnDestroy, OnInit {
     constructor(
         public authService: AuthService,
-        private userListService: UserListService
+        private router: Router
     ) {}
 
     public ngOnInit(): void {
-        this._resetServices();
     }
 
     public ngOnDestroy(): void {
-        this._resetServices();
     }
 
-    private _resetServices(): void {
+    public logout() {
         this.authService.reset();
-        this.userListService.reset();
+        this.router.navigate(['']);
     }
 }

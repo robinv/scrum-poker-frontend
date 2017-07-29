@@ -1,6 +1,6 @@
 export const environment = {
     production: true,
-    webSocket: {
+    api: {
         url: 'localhost:3000'
     }
 };

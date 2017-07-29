@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ScrumPokerComponent } from './scrum-poker/scrum-poker.component';
-import { ConnectGuard } from './shared/connect-guard.service';
-import { UserCreationComponent } from './user-creation/user-creation.component';
+import { SignupComponent } from './signup/signup.component';
 import { LogoutGuard } from './shared/logout.guard';
-import { LoginComponent } from './login/login/login.component';
+import { LoginComponent } from './login/login.component';
+import { LoginGuard } from './shared/login.guard';
+import { OverviewComponent } from './scrum-poker/overview/overview.component';
 
 const routes: Routes = [
     {
@@ -14,14 +15,18 @@ const routes: Routes = [
     },
     {
         path: 'signup',
-        component: UserCreationComponent,
+        component: SignupComponent,
         canActivate: [LogoutGuard]
     },
     {
         path: 'scrum-poker',
         component: ScrumPokerComponent,
-        canActivateChild: [ConnectGuard],
+        canActivateChild: [LoginGuard],
         children: [
+            {
+                path: '',
+                component: OverviewComponent
+            }
         ]
     }
 ];

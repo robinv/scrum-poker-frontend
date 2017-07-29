@@ -3,35 +3,36 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { ConnectGuard } from './shared/connect-guard.service';
 import { ConnectComponent } from './connect/connect.component';
 import { ScrumPokerModule } from './scrum-poker/scrum-poker.module';
-import { LoginComponent } from './login/login/login.component';
-import { UserCreationComponent } from './user-creation/user-creation.component';
+import { LoginComponent } from './login/login.component';
+import { SignupComponent } from './signup/signup.component';
 import { LoginGuard } from './shared/login.guard';
 import { LogoutGuard } from './shared/logout.guard';
-import { LoginService } from './login/login/login.service';
+import { LoginService } from './login/login.service';
 import { FormsModule } from '@angular/forms';
+import { SignupService } from './signup/signup.service';
+import { HttpModule } from '@angular/http';
 
 @NgModule({
     declarations: [
         AppComponent,
         ConnectComponent,
-        UserCreationComponent,
+        SignupComponent,
         LoginComponent
     ],
     imports: [
         BrowserModule,
         AppRoutingModule,
         ScrumPokerModule,
-        FormsModule
+        FormsModule,
+        HttpModule
     ],
     providers: [
-        ConnectGuard,
         LoginGuard,
         LogoutGuard,
         LoginService,
-        UserCreationComponent
+        SignupService
     ],
     bootstrap: [AppComponent]
 })

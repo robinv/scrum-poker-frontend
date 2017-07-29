@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, CanActivateChild, Router } from '@angular/router';
-import { WebSocketService } from '../scrum-poker/shared/web-socket.service';
+import { WebSocketService } from './web-socket.service';
 
 @Injectable()
 export class ConnectGuard implements CanActivate, CanActivateChild {

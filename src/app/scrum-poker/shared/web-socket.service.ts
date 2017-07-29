@@ -15,11 +15,15 @@ export class WebSocketService implements OnDestroy {
     }
 
     public connect(): void {
-        this.socket = io.connect(environment.webSocket.url);
+        this.socket = io.connect(environment.api.url);
         this.observables = new Map();
     }
 
     public ngOnDestroy(): void {
+        if (this.isConnected()) {
+            this.socket.disconnect();
+            this.socket = null;
+        }
     }
 
     public isConnected(): boolean {
