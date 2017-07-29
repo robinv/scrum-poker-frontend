@@ -1,6 +1,6 @@
 <nav *ngIf="authService.isLoggedIn()">
     <h2>Hi {{authService.user.name}}</h2>
-    <a routerLink="/scrum-poker" routerLinkActive="active">Overview</a>
+    <a routerLinkActive="active">Overview</a>
     <a href="#" (click)="logout()">Logout</a>
 </nav>
 <router-outlet></router-outlet>

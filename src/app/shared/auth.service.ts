@@ -36,10 +36,11 @@ export class AuthService implements Resettable {
     }
 
     set token(token: String) {
-        const decodedToken = this._jwtHelper.decodeToken(token.toString());
-        if (decodedToken.exp * 1000 < new Date().getTime()) {
+        if (this._jwtHelper.isTokenExpired(token.toString())) {
             throw new Error('token is expired');
         }
+
+        const decodedToken = this._jwtHelper.decodeToken(token.toString());
 
         localStorage.setItem('token', token.toString());
         this._decodedToken = decodedToken;

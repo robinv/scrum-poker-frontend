@@ -4,7 +4,7 @@ import { AuthService } from '../shared/auth.service';
 import { Router } from '@angular/router';
 
 @Component({
-    selector: 'app-scrum-poker-user-creation',
+    selector: 'app-signup',
     templateUrl: './signup.component.html'
 })
 
@@ -25,7 +25,7 @@ export class SignupComponent implements OnDestroy, OnInit {
     ngOnDestroy(): void {
     }
 
-    public createUser() {
+    public onSubmit() {
         this.signupService
             .create(this.name, this.password)
             .subscribe(response => {

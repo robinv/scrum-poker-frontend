@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '../shared/auth.service';
 
 @Component({
-    selector: 'app-scrum-poker-login',
+    selector: 'app-login',
     templateUrl: './login.component.html'
 })
 export class LoginComponent {
@@ -17,7 +17,7 @@ export class LoginComponent {
         private authService: AuthService
     ) { }
 
-    public login(): void {
+    public onSubmit(): void {
         this.loginService
             .login(this.name, this.password)
             .subscribe(response => {

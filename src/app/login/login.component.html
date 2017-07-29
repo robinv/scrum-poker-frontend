@@ -1,7 +1,25 @@
 <h3>Login</h3>
-or <a routerLink="/signup" routerLinkActive="active">Sign up</a>
-<div>
-    <input [(ngModel)]="name" placeholder="name" />
-    <input [(ngModel)]="password" type="password" />
-    <button (click)="this.login()">Login</button>
-</div>
+<p>
+    You don't have an account yet?
+    <button routerLink="/signup" md-raised-button data-color="primary">Signup</button>
+</p>
+<form #loginForm="ngForm" (ngSubmit)="onSubmit()">
+    <md-input-container>
+        <input
+            mdInput
+            name="name"
+            placeholder="Name"
+            [(ngModel)]="name"
+        />
+    </md-input-container>
+    <md-input-container>
+        <input
+            mdInput
+            name="password"
+            type="Password"
+            placeholder="Password"
+            [(ngModel)]="password"
+        />
+    </md-input-container>
+    <button md-raised-button data-color="primary">Login</button>
+</form>

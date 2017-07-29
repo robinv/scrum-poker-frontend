@@ -13,6 +13,8 @@ import { LoginService } from './login/login.service';
 import { FormsModule } from '@angular/forms';
 import { SignupService } from './signup/signup.service';
 import { HttpModule } from '@angular/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MdButtonModule, MdInputModule, MdMenuModule, MdToolbarModule } from '@angular/material';
 
 @NgModule({
     declarations: [
@@ -26,7 +28,12 @@ import { HttpModule } from '@angular/http';
         AppRoutingModule,
         ScrumPokerModule,
         FormsModule,
-        HttpModule
+        HttpModule,
+        BrowserAnimationsModule,
+        MdButtonModule,
+        MdInputModule,
+        MdMenuModule,
+        MdToolbarModule
     ],
     providers: [
         LoginGuard,
