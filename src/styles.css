@@ -4,3 +4,7 @@ body {
     font-family: 'Roboto', monospace;
     margin: 0;
 }
+
+.content {
+    padding: 20px;
+}

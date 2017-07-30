@@ -1,25 +1,27 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from '../shared/auth.service';
-import { Router } from '@angular/router';
 import { WebSocketService } from './shared/web-socket.service';
 import { UserListService } from './shared/user-list.service';
+import { GroupListService } from './shared/group-list.service';
 
 @Component({
     selector: 'app-scrum-poker',
-    templateUrl: './scrum-poker.component.html'
+    templateUrl: './scrum-poker.component.html',
+    styleUrls: ['./scrum-poker.component.scss']
 })
 
 export class ScrumPokerComponent implements OnDestroy, OnInit {
     constructor(
         public authService: AuthService,
-        private _webSocketService: WebSocketService,
-        private _userListService: UserListService,
-        private _router: Router,
+        public userListService: UserListService,
+        private _groupListService: GroupListService,
+        private _webSocketService: WebSocketService
     ) {}
 
     public ngOnInit(): void {
         this._webSocketService.connect();
-        this._userListService.init();
+        this.userListService.init();
+        this._groupListService.init();
     }
 
     public ngOnDestroy(): void {
@@ -28,6 +30,7 @@ export class ScrumPokerComponent implements OnDestroy, OnInit {
 
     public resetServices(): void {
         this._webSocketService.reset();
-        this._userListService.reset();
+        this.userListService.reset();
+        this._groupListService.reset();
     }
 }

@@ -8,6 +8,9 @@ import { RouterModule } from '@angular/router';
 import { AuthService } from '../shared/auth.service';
 import { UserListService } from './shared/user-list.service';
 import { WebSocketService } from './shared/web-socket.service';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { MdCardModule, MdListModule } from '@angular/material';
+import { GroupListService } from './shared/group-list.service';
 
 @NgModule({
     declarations: [
@@ -17,12 +20,16 @@ import { WebSocketService } from './shared/web-socket.service';
     imports: [
         BrowserModule,
         FormsModule,
-        RouterModule
+        RouterModule,
+        FlexLayoutModule,
+        MdCardModule,
+        MdListModule
     ],
     providers: [
         WebSocketService,
         AuthService,
-        UserListService
+        UserListService,
+        GroupListService
     ],
     bootstrap: [ScrumPokerComponent]
 })

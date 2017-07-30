@@ -1,25 +1,39 @@
-<h3>Login</h3>
-<p>
-    You don't have an account yet?
-    <button routerLink="/signup" md-raised-button data-color="primary">Signup</button>
-</p>
-<form #loginForm="ngForm" (ngSubmit)="onSubmit()">
-    <md-input-container>
-        <input
-            mdInput
-            name="name"
-            placeholder="Name"
-            [(ngModel)]="name"
-        />
-    </md-input-container>
-    <md-input-container>
-        <input
-            mdInput
-            name="password"
-            type="Password"
-            placeholder="Password"
-            [(ngModel)]="password"
-        />
-    </md-input-container>
-    <button md-raised-button data-color="primary">Login</button>
-</form>
+<div class="content">
+    <h3>Login</h3>
+    <div fxLayout="column" fxLayoutGap="50px">
+        <form #loginForm="ngForm" (ngSubmit)="onSubmit()" fxLayout="column">
+            <div>
+                <md-input-container fxFlex="33" fxFlex.xs="100">
+                    <input
+                        mdInput
+                        name="name"
+                        placeholder="Name"
+                        [(ngModel)]="name"
+                    />
+                </md-input-container>
+            </div>
+            <div>
+                <md-input-container fxFlex="33" fxFlex.xs="100">
+                    <input
+                        mdInput
+                        name="password"
+                        type="Password"
+                        placeholder="Password"
+                        [(ngModel)]="password"
+                    />
+                </md-input-container>
+            </div>
+            <div>
+                <button md-raised-button data-color="primary">Login</button>
+            </div>
+        </form>
+        <div fxLayout="column" fxLayoutGap="10px">
+            <div>
+                <span>You don't have an account yet?</span>
+            </div>
+            <div>
+                <button routerLink="/signup" md-raised-button data-color="primary">Signup</button>
+            </div>
+        </div>
+    </div>
+</div>

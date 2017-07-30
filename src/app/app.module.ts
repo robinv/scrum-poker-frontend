@@ -14,7 +14,10 @@ import { FormsModule } from '@angular/forms';
 import { SignupService } from './signup/signup.service';
 import { HttpModule } from '@angular/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MdButtonModule, MdInputModule, MdMenuModule, MdToolbarModule } from '@angular/material';
+import {
+    MdButtonModule, MdInputModule, MdMenuModule, MdToolbarModule
+} from '@angular/material';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
     declarations: [
@@ -33,7 +36,8 @@ import { MdButtonModule, MdInputModule, MdMenuModule, MdToolbarModule } from '@a
         MdButtonModule,
         MdInputModule,
         MdMenuModule,
-        MdToolbarModule
+        MdToolbarModule,
+        FlexLayoutModule
     ],
     providers: [
         LoginGuard,

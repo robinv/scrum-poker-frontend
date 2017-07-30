@@ -1,5 +1,44 @@
-<h3>Overview</h3>
-<h4>Users</h4>
-<ul>
-    {{userListService.users.length}}
-</ul>
+<div fxLayout="row" fxFlex fxLayoutWrap>
+    <md-card class="card" fxFlex="100"></md-card>
+    <md-card class="card" fxFlex="calc(50% - 10px)" fxFlex.xs="calc(100% - 10px)">
+        <md-card-content>
+            <md-card-subtitle>{{userListService.getOnlineUsers().length}} Users are online</md-card-subtitle>
+            <md-card-content>
+                <md-list>
+                    <md-list-item *ngFor="let user of getOrderedByName(userListService.getOnlineUsers())">
+                        <h3 md-line>{{user.name}}</h3>
+                        <p md-line>
+                            <span>{{user.id}}</span>
+                        </p>
+                    </md-list-item>
+                </md-list>
+            </md-card-content>
+            <md-card-subtitle>
+                {{userListService.getOfflineUsers().length}} Users are offline
+            </md-card-subtitle>
+            <md-card-content>
+                <md-list>
+                    <md-list-item *ngFor="let user of getOrderedByName(userListService.getOfflineUsers())">
+                        <h3 md-line>{{user.name}}</h3>
+                        <p md-line>
+                            <span>{{user.id}}</span>
+                        </p>
+                    </md-list-item>
+                </md-list>
+            </md-card-content>
+        </md-card-content>
+    </md-card>
+    <md-card class="card" fxFlex="calc(50% - 10px)" fxFlex.xs="calc(100% - 10px)">
+        <md-card-subtitle>{{groupListService.groups.length}} groups exist</md-card-subtitle>
+        <md-card-content>
+            <md-list>
+                <md-list-item *ngFor="let group of getOrderedByName(groupListService.groups)">
+                    <h3 md-line>{{group.name}}</h3>
+                    <p md-line>
+                        <span>{{group.id}}</span>
+                    </p>
+                </md-list-item>
+            </md-list>
+        </md-card-content>
+    </md-card>
+</div>
