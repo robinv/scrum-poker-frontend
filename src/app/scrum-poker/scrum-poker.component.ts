@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from '../shared/auth.service';
 import { WebSocketService } from './shared/web-socket.service';
 import { UserListService } from './shared/user-list.service';
-import { GroupListService } from './shared/group-list.service';
+import { GroupService } from './shared/group.service';
 
 @Component({
     selector: 'app-scrum-poker',
@@ -14,7 +14,7 @@ export class ScrumPokerComponent implements OnDestroy, OnInit {
     constructor(
         public authService: AuthService,
         public userListService: UserListService,
-        private _groupListService: GroupListService,
+        private _groupListService: GroupService,
         private _webSocketService: WebSocketService
     ) {}
 

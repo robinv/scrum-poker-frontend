@@ -7,16 +7,19 @@ import { Subject } from 'rxjs/Subject';
 import { Initializable } from '../../shared/initializable.interface';
 import { Group } from './group.model';
 import { UserListService } from './user-list.service';
+import { Observable } from 'rxjs/Observable';
+import { AuthService } from '../../shared/auth.service';
 
 @Injectable()
-export class GroupListService implements Resettable, Initializable {
+export class GroupService implements Resettable, Initializable {
 
     private _destroySubject = new Subject();
     private _groups: Group[] = [];
 
     constructor(
         private _webSocketService: WebSocketService,
-        private _userListService: UserListService
+        private _userListService: UserListService,
+        private _authService: AuthService
     ) {}
 
     get groups(): Group[] {
@@ -41,6 +44,19 @@ export class GroupListService implements Resettable, Initializable {
     public getById(id: String): Group {
         return this._groups.find(group => {
             return Object.is(id, group.id);
+        });
+    }
+
+    public create(name: String, password: String): Observable<Group>{
+        return new Observable(observer => {
+            this._webSocketService.emit('group.create', {
+                name,
+                password
+            }, (response) => {
+                const owner = this._userListService.getById(this._authService.userId);
+                const group = new Group(response.message.id, name, owner);
+                observer.next(group);
+            });
         });
     }
 

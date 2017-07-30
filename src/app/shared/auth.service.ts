@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 export class AuthService implements Resettable {
     private _token: String;
     private _decodedToken: any;
-    private _user: User;
+    private _userId: String;
     private _jwtHelper: JwtHelper;
 
     constructor(
@@ -27,8 +27,8 @@ export class AuthService implements Resettable {
         }
     }
 
-    get user(): User {
-        return this._user;
+    get userId(): String {
+        return this._userId;
     }
 
     get token(): String {
@@ -48,7 +48,7 @@ export class AuthService implements Resettable {
 
         localStorage.setItem('token', token.toString());
         this._decodedToken = decodedToken;
-        this._user = new User(this._decodedToken.id, this._decodedToken.name);
+        this._userId = this._decodedToken.id;
         this._token = token;
     }
 
@@ -63,6 +63,6 @@ export class AuthService implements Resettable {
         localStorage.removeItem('token');
         this._token = undefined;
         this._decodedToken = undefined;
-        this._user = undefined;
+        this._userId = undefined;
     }
 }

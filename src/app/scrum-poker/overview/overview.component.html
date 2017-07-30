@@ -1,5 +1,7 @@
 <div fxLayout="row" fxFlex fxLayoutWrap>
-    <md-card class="card" fxFlex="100"></md-card>
+    <md-card class="card" fxFlex="100">
+        <button md-raised-button color="primary" routerLink="/scrum-poker/create-group">Create Group</button>
+    </md-card>
     <div fxFlex="calc(50% - 10px)" fxFlex.xs="calc(100% - 10px)">
         <md-card class="card" fxFlex="calc(50% - 10px)" fxFlex.xs="calc(100% - 10px)">
             <md-card-content>
@@ -32,13 +34,13 @@
     </div>
     <div fxFlex="calc(50% - 10px)" fxFlex.xs="calc(100% - 10px)">
         <md-card class="card">
-            <md-card-subtitle>{{groupListService.groups.length}} groups available</md-card-subtitle>
+            <md-card-subtitle>{{groupService.groups.length}} groups available</md-card-subtitle>
             <md-card-content>
                 <md-list>
-                    <md-list-item *ngFor="let group of getOrderedByName(groupListService.groups)">
+                    <md-list-item *ngFor="let group of getOrderedByName(groupService.groups)">
                         <h3 md-line>{{group.name}}</h3>
                         <p md-line>
-                            <span>{{group.id}}</span>
+                            <span>{{userListService.getById(group.owner.id).name}}</span>
                         </p>
                     </md-list-item>
                 </md-list>

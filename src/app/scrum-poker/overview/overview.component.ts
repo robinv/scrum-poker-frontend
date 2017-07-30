@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { UserListService } from '../shared/user-list.service';
-import { GroupListService } from '../shared/group-list.service';
+import { GroupService } from '../shared/group.service';
 
 @Component({
     selector: 'app-scrum-poker-overview',
@@ -12,7 +12,7 @@ export class OverviewComponent {
 
     constructor(
         public userListService: UserListService,
-        public groupListService: GroupListService
+        public groupService: GroupService
     ) {}
 
     public getOrderedByName(items: Array<any>) {

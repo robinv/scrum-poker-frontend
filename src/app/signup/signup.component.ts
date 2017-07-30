@@ -13,9 +13,9 @@ export class SignupComponent implements OnDestroy, OnInit {
     public password: String = '';
 
     constructor(
-        private signupService: SignupService,
-        private authService: AuthService,
-        private router: Router
+        private _signupService: SignupService,
+        private _authService: AuthService,
+        private _router: Router
     ) {}
 
     ngOnInit(): void {
@@ -26,11 +26,11 @@ export class SignupComponent implements OnDestroy, OnInit {
     }
 
     public onSubmit() {
-        this.signupService
+        this._signupService
             .create(this.name, this.password)
             .subscribe(response => {
-                this.authService.token = response;
-                this.router.navigate(['scrum-poker']);
+                this._authService.token = response;
+                this._router.navigate(['scrum-poker']);
             }, error => {
                 console.log({error});
             });

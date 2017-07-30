@@ -9,13 +9,17 @@ import { AuthService } from '../shared/auth.service';
 import { UserListService } from './shared/user-list.service';
 import { WebSocketService } from './shared/web-socket.service';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { MdCardModule, MdListModule } from '@angular/material';
-import { GroupListService } from './shared/group-list.service';
+import {
+    MdButtonModule, MdCardModule, MdInputModule, MdListModule
+} from '@angular/material';
+import { GroupService } from './shared/group.service';
+import { CreateGroupComponent } from './create-group/create-group.component';
 
 @NgModule({
     declarations: [
         ScrumPokerComponent,
-        OverviewComponent
+        OverviewComponent,
+        CreateGroupComponent
     ],
     imports: [
         BrowserModule,
@@ -23,13 +27,15 @@ import { GroupListService } from './shared/group-list.service';
         RouterModule,
         FlexLayoutModule,
         MdCardModule,
-        MdListModule
+        MdListModule,
+        MdButtonModule,
+        MdInputModule
     ],
     providers: [
         WebSocketService,
         AuthService,
         UserListService,
-        GroupListService
+        GroupService
     ],
     bootstrap: [ScrumPokerComponent]
 })

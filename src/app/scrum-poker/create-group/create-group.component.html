@@ -1,0 +1,33 @@
+<div class="content">
+    <h3>Create Group</h3>
+    <div fxLayout="column" fxLayoutGap="50px">
+        <form #createGroupForm="ngForm" (ngSubmit)="onSubmit()" fxLayout="column">
+            <div>
+                <md-input-container fxFlex="33" fxFlex.xs="100">
+                    <input
+                        mdInput
+                        name="groupName"
+                        required
+                        placeholder="Group Name"
+                        [(ngModel)]="name"
+                    />
+                </md-input-container>
+            </div>
+            <div>
+                <md-input-container fxFlex="33" fxFlex.xs="100">
+                    <input
+                        mdInput
+                        required
+                        name="groupPassword"
+                        type="Password"
+                        placeholder="Group Password"
+                        [(ngModel)]="password"
+                    />
+                </md-input-container>
+            </div>
+            <div>
+                <button md-raised-button data-color="primary">Create</button>
+            </div>
+        </form>
+    </div>
+</div>

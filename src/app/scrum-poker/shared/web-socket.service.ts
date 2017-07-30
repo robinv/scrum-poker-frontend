@@ -28,6 +28,7 @@ export class WebSocketService implements Resettable {
         });
         this._socket.on('disconnect', () => {
             this._authService.reset();
+            this.reset();
             this._router.navigate(['']);
         });
     }
