@@ -36,6 +36,10 @@ export class UserListService implements Resettable, Initializable {
                 const user = this.getById(item.id);
                 if (user) {
                     user.online = true;
+                } else {
+                    const user = new User(item.id, item.name);
+                    user.online = true;
+                    this._users.push(user);
                 }
             });
 
@@ -46,6 +50,8 @@ export class UserListService implements Resettable, Initializable {
                 const user = this.getById(item.id);
                 if (user) {
                     user.online = false;
+                } else {
+                    this._users.push(new User(item.id, item.name));
                 }
             });
     }
