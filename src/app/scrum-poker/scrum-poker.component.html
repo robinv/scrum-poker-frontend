@@ -1,6 +1,1 @@
-<nav *ngIf="authService.isLoggedIn()">
-    <h2>Hi {{authService.user.name}}</h2>
-    <a routerLinkActive="active">Overview</a>
-    <a href="#" (click)="logout()">Logout</a>
-</nav>
 <router-outlet></router-outlet>

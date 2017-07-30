@@ -26,12 +26,6 @@ export class ScrumPokerComponent implements OnDestroy, OnInit {
         this.resetServices();
     }
 
-    public logout() {
-        this.authService.reset();
-        this.resetServices();
-        this._router.navigate(['']);
-    }
-
     public resetServices(): void {
         this._webSocketService.reset();
         this._userListService.reset();

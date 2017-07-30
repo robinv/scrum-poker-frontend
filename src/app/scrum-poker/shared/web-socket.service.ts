@@ -5,13 +5,17 @@ import { Observable } from 'rxjs/Observable';
 import { environment } from '../../../environments/environment';
 import { Resettable } from '../../shared/resettable.interface';
 import { AuthService } from '../../shared/auth.service';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class WebSocketService implements Resettable {
     private _socket: SocketIOClient.Socket;
     private _observables: Map<String, Observable<any>> = new Map();
 
-    constructor(private _authService: AuthService) {}
+    constructor(
+        private _authService: AuthService,
+        private _router: Router
+    ) {}
 
     public connect(): void {
         if (this.isConnected()) {
@@ -21,6 +25,10 @@ export class WebSocketService implements Resettable {
             query: {
                 token: this._authService.token
            }
+        });
+        this._socket.on('disconnect', () => {
+            this._authService.reset();
+            this._router.navigate(['']);
         });
     }
 
