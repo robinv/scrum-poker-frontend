@@ -9,5 +9,6 @@ import { UserListService } from '../shared/user-list.service';
 export class OverviewComponent {
 
     constructor(
+        public userListService: UserListService
     ) {}
 }

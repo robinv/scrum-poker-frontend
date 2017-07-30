@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Resettable } from './reset.interface';
+import { Resettable } from './resettable.interface';
 import { User } from '../scrum-poker/shared/user.model';
 import { JwtHelper } from 'angular2-jwt';
 import { Router } from '@angular/router';
@@ -32,6 +32,10 @@ export class AuthService implements Resettable {
     }
 
     get token(): String {
+        if (this._jwtHelper.isTokenExpired(this._token.toString())) {
+            this.reset();
+            this.router.navigate(['']);
+        }
         return this._token;
     }
 
@@ -55,7 +59,7 @@ export class AuthService implements Resettable {
         return true;
     }
 
-    reset(): void {
+    public reset(): void {
         localStorage.removeItem('token');
         this._token = undefined;
         this._decodedToken = undefined;

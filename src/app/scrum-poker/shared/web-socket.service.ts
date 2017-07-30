@@ -1,52 +1,58 @@
-import 'rxjs/add/operator/takeUntil';
-
 import * as io from 'socket.io-client';
 
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { environment } from '../../../environments/environment';
+import { Resettable } from '../../shared/resettable.interface';
+import { AuthService } from '../../shared/auth.service';
 
 @Injectable()
-export class WebSocketService implements OnDestroy {
-    private socket: SocketIOClient.Socket;
-    private observables: Map<String, Observable<any>>;
+export class WebSocketService implements Resettable {
+    private _socket: SocketIOClient.Socket;
+    private _observables: Map<String, Observable<any>> = new Map();
 
-    constructor() {
-    }
+    constructor(private _authService: AuthService) {}
 
     public connect(): void {
-        this.socket = io.connect(environment.api.url);
-        this.observables = new Map();
-    }
-
-    public ngOnDestroy(): void {
         if (this.isConnected()) {
-            this.socket.disconnect();
-            this.socket = null;
+            throw new Error('socket is already connected. disconnect first');
         }
+        this._socket = io.connect(environment.api.url, {
+            query: {
+                token: this._authService.token
+           }
+        });
     }
 
     public isConnected(): boolean {
-        return this.socket && this.socket.connected;
+        return this._socket && this._socket.connected;
     }
 
     public getObservable(event: string): Observable<any> {
-        if (!this.observables.has(event)) {
+        if (!this._observables.has(event)) {
             const observable = new Observable(observer => {
-                this.socket.on(event, (response) => {
+                this._socket.on(event, (response) => {
                     observer.next(response);
                 });
             });
-            this.observables.set(event, observable);
+            this._observables.set(event, observable);
         }
-        return this.observables.get(event);
+        return this._observables.get(event);
     }
 
     public emit(event: string, message: any, onSuccess?: Function): void {
-        this.socket.emit(event, message, function(response) {
+        this._socket.emit(event, message, function(response) {
             if (onSuccess) {
                 onSuccess(response);
             }
         });
+    }
+
+    public reset(): void {
+        if (this.isConnected()) {
+            this._socket.disconnect();
+        }
+        this._socket = undefined;
+        this._observables = new Map();
     }
 }
