@@ -1,32 +1,41 @@
 <div class="content">
     <h3>Login</h3>
     <div fxLayout="column" fxLayoutGap="50px">
-        <form #loginForm="ngForm" (ngSubmit)="onSubmit()" fxLayout="column">
-            <div>
-                <md-input-container fxFlex="33" fxFlex.xs="100">
-                    <input
-                        mdInput
-                        name="name"
-                        required
-                        placeholder="Name"
-                        [(ngModel)]="name"
-                    />
-                </md-input-container>
-            </div>
-            <div>
-                <md-input-container fxFlex="33" fxFlex.xs="100">
-                    <input
-                        mdInput
-                        required
-                        name="password"
-                        type="Password"
-                        placeholder="Password"
-                        [(ngModel)]="password"
-                    />
-                </md-input-container>
-            </div>
-            <div>
-                <button md-raised-button data-color="primary">Login</button>
+        <form
+            #loginForm="ngForm"
+            (ngSubmit)="onSubmit(loginForm)"
+            fxLayout="column"
+            fxLayoutGap="10px"
+        >
+            <md-input-container>
+                <input
+                    [disabled]="isLoading"
+                    mdInput
+                    name="name"
+                    required
+                    placeholder="Name"
+                    [(ngModel)]="name"
+                />
+                <md-error>This field is required</md-error>
+            </md-input-container>
+            <md-input-container fxFlex="33" fxFlex.xs="100">
+                <input
+                    [disabled]="isLoading"
+                    mdInput
+                    required
+                    name="password"
+                    type="Password"
+                    placeholder="Password"
+                    [(ngModel)]="password"
+                />
+                <md-error>This field is required</md-error>
+            </md-input-container>
+            <div fxLayout="column" fxLayoutGap="10px">
+                <md-error *ngIf="formError">{{formError}}</md-error>
+                <div>
+                    <button [disabled]="isLoading" md-raised-button data-color="primary">Login</button>
+                    <md-spinner mode="indeterminate"></md-spinner>
+                </div>
             </div>
         </form>
         <div fxLayout="column" fxLayoutGap="10px">

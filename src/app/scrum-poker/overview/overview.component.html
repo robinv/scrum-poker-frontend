@@ -3,7 +3,7 @@
         <button md-raised-button color="primary" routerLink="/scrum-poker/create-group">Create Group</button>
     </md-card>
     <div fxFlex="calc(50% - 10px)" fxFlex.xs="calc(100% - 10px)">
-        <md-card class="card" fxFlex="calc(50% - 10px)" fxFlex.xs="calc(100% - 10px)">
+        <md-card class="card">
             <md-card-content>
                 <md-card-subtitle>{{userListService.getOnlineUsers().length}} Users are online</md-card-subtitle>
                 <md-card-content>
@@ -48,3 +48,4 @@
         </md-card>
     </div>
 </div>
+

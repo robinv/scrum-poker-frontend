@@ -1,34 +1,37 @@
 <div class="content">
     <h3>Sign Up</h3>
-    <form #signupForm="ngForm" (ngSubmit)="onSubmit()" fxLayout="column">
-        <div>
-            <md-input-container fxFlex="33" fxFlex.xs="100">
-                <input
-                    mdInput
-                    name="name"
-                    placeholder="Name"
-                    minlength="3"
-                    maxlength="64"
-                    required
-                    [(ngModel)]="name"
-                />
-            </md-input-container>
-        </div>
-        <div>
-            <md-input-container fxFlex="33" fxFlex.xs="100">
-                <input
-                    mdInput
-                    name="password"
-                    type="password"
-                    required
-                    placeholder="Password"
-                    [(ngModel)]="password"
-                    minlength="8"
-                />
-            </md-input-container>
-        </div>
-        <div>
-            <button md-raised-button data-color="primary">Sign up</button>
+    <form #signupForm="ngForm" (ngSubmit)="onSubmit(signupForm)" fxLayout="column" fxLayoutGap="10px">
+        <md-input-container>
+            <input
+                [disabled]="isLoading"
+                mdInput
+                name="name"
+                placeholder="Name"
+                minlength="3"
+                maxlength="64"
+                required
+                [(ngModel)]="name"
+            />
+            <md-error>The name must contain between 3 and 64 characters.</md-error>
+        </md-input-container>
+        <md-input-container>
+            <input
+                [disabled]="isLoading"
+                mdInput
+                name="password"
+                type="password"
+                required
+                placeholder="Password"
+                [(ngModel)]="password"
+                minlength="8"
+            />
+            <md-error>The password must contain at least 8 characters.</md-error>
+        </md-input-container>
+        <div fxLayout="column" fxLayoutGap="10px">
+            <md-error *ngIf="formError">{{formError}}</md-error>
+            <div>
+                <button [disabled]="isLoading" md-raised-button data-color="primary">Sign Up</button>
+            </div>
         </div>
     </form>
 </div>
