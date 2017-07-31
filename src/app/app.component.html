@@ -1,2 +1,7 @@
-<h1>Scrum Poker</h1>
+<md-toolbar data-color="primary">
+    <button md-button routerLink="/">Scrum Poker</button>
+    <div *ngIf="authService.isLoggedIn()">
+        <button md-button (click)="logout()">Logout</button>
+    </div>
+</md-toolbar>
 <router-outlet></router-outlet>

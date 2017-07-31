@@ -1,5 +1,5 @@
-<nav *ngIf="authService.isLoggedIn()">
-    <h2>Hi {{authService.user.name}}</h2>
-    <a routerLink="/scrum-poker" routerLinkActive="active">Overview</a>
-</nav>
-<router-outlet></router-outlet>
+<div fxLayout="row" fxLayout.xs="column">
+    <div fxFlex class="content" fxFlexOrder="1" fxFlexOrder.xs="2">
+        <router-outlet></router-outlet>
+    </div>
+</div>

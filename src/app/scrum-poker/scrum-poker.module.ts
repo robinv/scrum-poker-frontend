@@ -5,34 +5,38 @@ import { ScrumPokerComponent } from './scrum-poker.component';
 import { OverviewComponent } from './overview/overview.component';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { UserCreationService } from './user-creation/user-creation.service';
-import { UserCreationComponent } from './user-creation/user-creation.component';
-import { LoginGuard } from './shared/login.guard';
-import { LogoutGuard } from './shared/logout.guard';
-import { AuthService } from './shared/auth.service';
-import { LoginComponent } from './login/login/login.component';
-import { LoginService } from './login/login/login.service';
+import { AuthService } from '../shared/auth.service';
 import { UserListService } from './shared/user-list.service';
+import { WebSocketService } from './shared/web-socket.service';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import {
+    MdButtonModule, MdCardModule, MdInputModule, MdListModule, MdProgressSpinnerModule
+} from '@angular/material';
+import { GroupService } from './shared/group.service';
+import { CreateGroupComponent } from './create-group/create-group.component';
 
 @NgModule({
     declarations: [
         ScrumPokerComponent,
         OverviewComponent,
-        UserCreationComponent,
-        LoginComponent
+        CreateGroupComponent
     ],
     imports: [
         BrowserModule,
         FormsModule,
-        RouterModule
+        RouterModule,
+        FlexLayoutModule,
+        MdCardModule,
+        MdListModule,
+        MdButtonModule,
+        MdInputModule,
+        MdProgressSpinnerModule
     ],
     providers: [
-        UserCreationService,
+        WebSocketService,
         AuthService,
-        LoginService,
         UserListService,
-        LoginGuard,
-        LogoutGuard
+        GroupService
     ],
     bootstrap: [ScrumPokerComponent]
 })

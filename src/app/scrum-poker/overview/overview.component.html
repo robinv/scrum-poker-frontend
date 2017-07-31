@@ -1,8 +1,51 @@
-<h3>Overview</h3>
-<h4>Users</h4>
-<ul>
-    <li *ngFor="let user of userListService.users">
-        {{user.name}}
-    </li>
+<div fxLayout="row" fxFlex fxLayoutWrap>
+    <md-card class="card" fxFlex="100">
+        <button md-raised-button color="primary" routerLink="/scrum-poker/create-group">Create Group</button>
+    </md-card>
+    <div fxFlex="calc(50% - 10px)" fxFlex.xs="calc(100% - 10px)">
+        <md-card class="card">
+            <md-card-content>
+                <md-card-subtitle>{{userListService.getOnlineUsers().length}} Users are online</md-card-subtitle>
+                <md-card-content>
+                    <md-list>
+                        <md-list-item *ngFor="let user of getOrderedByName(userListService.getOnlineUsers())">
+                            <h3 md-line>{{user.name}}</h3>
+                            <p md-line>
+                                <span>{{user.id}}</span>
+                            </p>
+                        </md-list-item>
+                    </md-list>
+                </md-card-content>
+                <md-card-subtitle>
+                    {{userListService.getOfflineUsers().length}} Users are offline
+                </md-card-subtitle>
+                <md-card-content>
+                    <md-list>
+                        <md-list-item *ngFor="let user of getOrderedByName(userListService.getOfflineUsers())">
+                            <h3 md-line>{{user.name}}</h3>
+                            <p md-line>
+                                <span>{{user.id}}</span>
+                            </p>
+                        </md-list-item>
+                    </md-list>
+                </md-card-content>
+            </md-card-content>
+        </md-card>
+    </div>
+    <div fxFlex="calc(50% - 10px)" fxFlex.xs="calc(100% - 10px)">
+        <md-card class="card">
+            <md-card-subtitle>{{groupService.groups.length}} groups available</md-card-subtitle>
+            <md-card-content>
+                <md-list>
+                    <md-list-item *ngFor="let group of getOrderedByName(groupService.groups)">
+                        <h3 md-line>{{group.name}}</h3>
+                        <p md-line>
+                            <span>{{userListService.getById(group.owner.id).name}}</span>
+                        </p>
+                    </md-list-item>
+                </md-list>
+            </md-card-content>
+        </md-card>
+    </div>
+</div>
 
-</ul>

@@ -5,7 +5,8 @@
 
 export const environment = {
     production: false,
-    webSocket: {
+    api: {
+        protocol: 'http',
         url: 'localhost:3000'
     }
 };

@@ -1,0 +1,37 @@
+<div>
+    <h3>Create Group</h3>
+    <div fxLayout="column" fxLayoutGap="50px">
+        <form #createGroupForm="ngForm" (ngSubmit)="onSubmit(createGroupForm)" fxLayout="column" fxLayoutGap="10px">
+            <md-input-container>
+                <input
+                    mdInput
+                    name="groupName"
+                    minlength="3"
+                    maxlength="64"
+                    required
+                    placeholder="Group Name"
+                    [(ngModel)]="name"
+                />
+                <md-error>The name must contain between 3 and 64 characters.</md-error>
+            </md-input-container>
+            <md-input-container fxFlex="33" fxFlex.sm="100">
+                <input
+                    mdInput
+                    required
+                    minlength="8"
+                    name="groupPassword"
+                    type="Password"
+                    placeholder="Group Password"
+                    [(ngModel)]="password"
+                />
+                <md-error>The password must contain at least 8 characters.</md-error>
+            </md-input-container>
+            <div fxLayout="column" fxLayoutGap="10px">
+                <md-error *ngIf="formError">{{formError}}</md-error>
+                <div>
+                    <button [disabled]="isLoading" md-raised-button data-color="primary">Create Group</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
