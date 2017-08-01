@@ -28,8 +28,9 @@
             </md-input-container>
             <div fxLayout="column" fxLayoutGap="10px">
                 <md-error *ngIf="formError">{{formError}}</md-error>
-                <div>
+                <div fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="start center">
                     <button [disabled]="isLoading" md-raised-button data-color="primary">Create Group</button>
+                    <md-spinner *ngIf="isLoading" mode="indeterminate"></md-spinner>
                 </div>
             </div>
         </form>

@@ -8,7 +8,8 @@ import { ControlContainer } from '@angular/forms';
 
 @Component({
     selector: 'app-signup',
-    templateUrl: './signup.component.html'
+    templateUrl: './signup.component.html',
+    styleUrls: ['./signup.component.css']
 })
 
 export class SignupComponent implements OnDestroy, OnInit {

@@ -7,7 +7,8 @@ import { ControlContainer } from '@angular/forms';
 
 @Component({
     selector: 'app-scrum-poker-create-group',
-    templateUrl: './create-group.component.html'
+    templateUrl: './create-group.component.html',
+    styleUrls: ['./create-group.component.css']
 })
 export class CreateGroupComponent {
     public isLoading: Boolean = false;
@@ -24,6 +25,7 @@ export class CreateGroupComponent {
         if (!createGroupForm.valid) {
             return;
         }
+        this.isLoading = true;
 
         this._groupService
             .create(this.name, this.password)

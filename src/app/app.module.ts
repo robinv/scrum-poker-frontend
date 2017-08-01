@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { ConnectComponent } from './connect/connect.component';
 import { ScrumPokerModule } from './scrum-poker/scrum-poker.module';
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
@@ -15,14 +14,13 @@ import { SignupService } from './signup/signup.service';
 import { HttpModule } from '@angular/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
-    MdButtonModule, MdInputModule, MdMenuModule, MdToolbarModule
+    MdButtonModule, MdInputModule, MdMenuModule, MdProgressSpinnerModule, MdToolbarModule
 } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
     declarations: [
         AppComponent,
-        ConnectComponent,
         SignupComponent,
         LoginComponent
     ],
@@ -36,6 +34,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
         MdButtonModule,
         MdInputModule,
         MdMenuModule,
+        MdProgressSpinnerModule,
         MdToolbarModule,
         FlexLayoutModule
     ],
