@@ -40,7 +40,7 @@
                     <md-list-item *ngFor="let group of getOrderedByName(groupService.groups)">
                         <h3 md-line>{{group.name}}</h3>
                         <p md-line>
-                            <span>{{userListService.getById(group.owner.id).name}}</span>
+                            <span>{{userListService.getById(group.userId).name}}</span>
                         </p>
                     </md-list-item>
                 </md-list>

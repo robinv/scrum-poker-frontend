@@ -3,12 +3,12 @@ import { User } from './user.model';
 export class Group {
     private _id: String;
     private _name: String;
-    private _owner: User;
+    private _userId: String;
 
-    constructor(id: String, name: String, owner: User) {
+    constructor(id: String, name: String, userId: String) {
         this._id = id;
         this._name = name;
-        this._owner = owner;
+        this._userId = userId;
     }
 
     get id(): String {
@@ -19,7 +19,7 @@ export class Group {
         return this._name;
     }
 
-    get owner(): User {
-        return this._owner;
+    get userId(): String {
+        return this._userId;
     }
 }

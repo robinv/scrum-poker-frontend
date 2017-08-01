@@ -1,8 +1,12 @@
+import 'rxjs/add/observable/forkJoin'
+
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from '../shared/auth.service';
 import { WebSocketService } from './shared/web-socket.service';
 import { UserListService } from './shared/user-list.service';
 import { GroupService } from './shared/group.service';
+import { Router } from '@angular/router';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
     selector: 'app-scrum-poker',
@@ -11,24 +15,41 @@ import { GroupService } from './shared/group.service';
 })
 
 export class ScrumPokerComponent implements OnDestroy, OnInit {
+    public isLoading: Boolean = false;
+
     constructor(
         public authService: AuthService,
         public userListService: UserListService,
         private _groupListService: GroupService,
-        private _webSocketService: WebSocketService
+        private _webSocketService: WebSocketService,
+        private _router: Router
     ) {}
 
     public ngOnInit(): void {
-        this._webSocketService.connect();
-        this.userListService.init();
-        this._groupListService.init();
+        this.isLoading = true;
+
+        this._webSocketService
+            .connect()
+            .subscribe(() => {
+                const userListInit = this.userListService.init();
+                const groupListInit = this._groupListService.init();
+
+                Observable.forkJoin(userListInit, groupListInit)
+                    .subscribe((a) => {
+                        this.isLoading = false;
+                    });
+            }, () => {
+                this.authService.reset();
+                this._resetServices();
+                this._router.navigate(['']);
+            });
     }
 
     public ngOnDestroy(): void {
-        this.resetServices();
+        this._resetServices();
     }
 
-    public resetServices(): void {
+    private _resetServices(): void {
         this._webSocketService.reset();
         this.userListService.reset();
         this._groupListService.reset();

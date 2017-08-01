@@ -27,65 +27,81 @@ export class UserListService implements Resettable, Initializable {
         return this._users;
     }
 
-    public init(): void {
-        this._loadUsers();
-        this._webSocketService
-            .getObservable('user.joined')
-            .takeUntil(this._destroySubject)
-            .subscribe(item => {
-                const user = this.getById(item.id);
-                if (user) {
-                    user.online = true;
-                } else {
-                    const user = new User(item.id, item.name);
-                    user.online = true;
-                    this._users.push(user);
-                }
-            });
+    public init(): Observable<any> {
+        this.reset();
+        return this._loadUsers()
+            .flatMap((users: Array<User>) => {
+                return new Observable(observer => {
+                    this._users = users;
 
-        this._webSocketService
-            .getObservable('user.left')
-            .takeUntil(this._destroySubject)
-            .subscribe(item => {
-                const user = this.getById(item.id);
-                if (user) {
-                    user.online = false;
-                } else {
-                    this._users.push(new User(item.id, item.name));
-                }
+                    this._webSocketService
+                        .getObservable('user.joined')
+                        .takeUntil(this._destroySubject)
+                        .subscribe(item => {
+                            const user = this.getById(item.id);
+                            if (user) {
+                                user.online = true;
+                            } else {
+                                const user = new User(item.id, item.name);
+                                user.online = true;
+                                this._users.push(user);
+                            }
+                        });
+
+                    this._webSocketService
+                        .getObservable('user.left')
+                        .takeUntil(this._destroySubject)
+                        .subscribe(item => {
+                            const user = this.getById(item.id);
+                            if (user) {
+                                user.online = false;
+                            } else {
+                                this._users.push(new User(item.id, item.name));
+                            }
+                        });
+                    observer.next();
+                    observer.complete();
+                });
             });
     }
 
-    private _loadUsers(): void {
+    private _loadUsers(): Observable<Array<User>> {
         const headers = new Headers();
         headers.set('Authorization', this._authService.token.toString());
 
-        this._http
+        return this._http
             .get(`${environment.api.protocol}://${environment.api.url}/users`, {
                 headers: headers
             })
-            .map((response: Response) => {
-                const users = response.json();
-                return users.map(userData => {
-                    return new User(userData.id, userData.name);
+            .flatMap((response: Response) => {
+                return new Observable(observer => {
+                    const users = response
+                        .json()
+                        .map(userData => {
+                            return new User(userData.id, userData.name);
+                        });
+                    observer.next(users);
+                    observer.complete();
+                });
+            })
+            .flatMap((users: Array<User>) => {
+                return new Observable(observer => {
+                    this._webSocketService.emit('user.list', {}, result => {
+                        result.message.forEach(item => {
+                            const existingUser = users.find(user => {
+                                return Object.is(item.id, user.id);
+                            });
+                            if (existingUser) {
+                                existingUser.online = true;
+                            }
+                        });
+                        observer.next(users);
+                        observer.complete();
+                    });
                 });
             })
             .catch((error: Response) => {
                 return Observable.throw(error.text());
-            })
-            .subscribe(users => {
-                users.forEach(user => {
-                    this.users.push(user);
-                });
-
-                this._webSocketService.emit('user.list', {}, result => {
-                    result.message.forEach(item => {
-                        const user = this.getById(item.id);
-                        if (user) {
-                            user.online = true;
-                        }
-                    });
-                });
             });
     }
 

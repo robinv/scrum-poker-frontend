@@ -1,4 +1,7 @@
-<div fxLayout="row" fxLayout.xs="column">
+<div *ngIf="isLoading" class="content">
+    <h1>Loading...</h1>
+</div>
+<div fxLayout="row" fxLayout.xs="column" *ngIf="!isLoading">
     <div fxFlex class="content" fxFlexOrder="1" fxFlexOrder.xs="2">
         <router-outlet></router-outlet>
     </div>

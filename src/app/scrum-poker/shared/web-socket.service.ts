@@ -17,19 +17,24 @@ export class WebSocketService implements Resettable {
         private _router: Router
     ) {}
 
-    public connect(): void {
-        if (this.isConnected()) {
-            throw new Error('socket is already connected. disconnect first');
-        }
-        this._socket = io.connect(environment.api.url, {
-            query: {
-                token: this._authService.token
-           }
-        });
-        this._socket.on('disconnect', () => {
-            this._authService.reset();
-            this.reset();
-            this._router.navigate(['']);
+    public connect(): Observable<any> {
+        return new Observable(observer => {
+            if (this.isConnected()) {
+                observer.error(new Error('socket is already connected. disconnect first'));
+                return;
+            }
+            this._socket = io.connect(environment.api.url, {
+                query: {
+                    token: this._authService.token
+                }
+            });
+            this._socket.on('disconnect', () => {
+                this._authService.reset();
+                this.reset();
+                this._router.navigate(['']);
+            });
+            observer.next();
+            observer.complete();
         });
     }
 

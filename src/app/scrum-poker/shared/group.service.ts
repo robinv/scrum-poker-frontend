@@ -26,18 +26,25 @@ export class GroupService implements Resettable, Initializable {
         return this._groups;
     }
 
-    public init(): void {
-        this._loadGroups();
-        this._webSocketService
-            .getObservable('group.created')
-            .takeUntil(this._destroySubject)
-            .subscribe(item => {
-                const existingGroup = this.getById(item.id);
-                if (!existingGroup) {
-                    const owner = this._userListService.getById(item.userId);
-                    const group: Group = new Group(item.id, item.name, owner);
-                    this._groups.push(group);
-                }
+    public init(): Observable<any> {
+        return this._loadGroups()
+            .flatMap((groups: Array<Group>) => {
+                return new Observable(observer => {
+                    this._groups = groups;
+
+                    this._webSocketService
+                        .getObservable('group.created')
+                        .takeUntil(this._destroySubject)
+                        .subscribe(item => {
+                            const existingGroup = this.getById(item.id);
+                            if (!existingGroup) {
+                                const group: Group = new Group(item.id, item.name, item.userId);
+                                this._groups.push(group);
+                            }
+                        });
+                    observer.next();
+                    observer.complete();
+                });
             });
     }
 
@@ -53,18 +60,21 @@ export class GroupService implements Resettable, Initializable {
                 name,
                 password
             }, (response) => {
-                const owner = this._userListService.getById(this._authService.userId);
-                const group = new Group(response.message.id, name, owner);
+                const group = new Group(response.message.id, name, this._authService.userId);
                 observer.next(group);
+                observer.complete();
             });
         });
     }
 
-    private _loadGroups():void {
-        this._webSocketService.emit('group.list', {}, result => {
-            this._groups = result.message.map(item => {
-                const owner = this._userListService.getById(item.userId);
-                return new Group(item.id, item.name, owner);
+    private _loadGroups(): Observable<Array<Group>> {
+        return new Observable(observer => {
+            this._webSocketService.emit('group.list', {}, result => {
+                const groups = result.message.map(item => {
+                    return new Group(item.id, item.name, item.userId);
+                });
+                observer.next(groups);
+                observer.complete();
             });
         });
     }

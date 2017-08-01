@@ -1,3 +1,5 @@
+import { Observable } from 'rxjs/Observable';
+
 export interface Initializable {
-    init(): void;
+    init(): Observable<any>;
 }
