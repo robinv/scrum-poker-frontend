@@ -3,7 +3,7 @@ import 'rxjs/add/observable/forkJoin'
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from '../shared/auth.service';
 import { WebSocketService } from './shared/web-socket.service';
-import { UserListService } from './shared/user-list.service';
+import { UserService } from './shared/user.service';
 import { GroupService } from './shared/group.service';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
@@ -19,7 +19,7 @@ export class ScrumPokerComponent implements OnDestroy, OnInit {
 
     constructor(
         public authService: AuthService,
-        public userListService: UserListService,
+        public userService: UserService,
         private _groupListService: GroupService,
         private _webSocketService: WebSocketService,
         private _router: Router
@@ -31,7 +31,7 @@ export class ScrumPokerComponent implements OnDestroy, OnInit {
         this._webSocketService
             .connect()
             .subscribe(() => {
-                const userListInit = this.userListService.init();
+                const userListInit = this.userService.init();
                 const groupListInit = this._groupListService.init();
 
                 Observable.forkJoin(userListInit, groupListInit)
@@ -51,7 +51,7 @@ export class ScrumPokerComponent implements OnDestroy, OnInit {
 
     private _resetServices(): void {
         this._webSocketService.reset();
-        this.userListService.reset();
+        this.userService.reset();
         this._groupListService.reset();
     }
 }

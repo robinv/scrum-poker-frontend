@@ -12,7 +12,7 @@ import { Observable } from 'rxjs/Observable';
 import { Http, Response, Headers } from '@angular/http';
 
 @Injectable()
-export class UserListService implements Resettable, Initializable {
+export class UserService implements Resettable, Initializable {
 
     private _destroySubject = new Subject();
     private _users: User[] = [];

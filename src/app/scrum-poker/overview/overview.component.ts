@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { UserListService } from '../shared/user-list.service';
+import { UserService } from '../shared/user.service';
 import { GroupService } from '../shared/group.service';
 
 @Component({
@@ -11,7 +11,7 @@ import { GroupService } from '../shared/group.service';
 export class OverviewComponent {
 
     constructor(
-        public userListService: UserListService,
+        public userService: UserService,
         public groupService: GroupService
     ) {}
 

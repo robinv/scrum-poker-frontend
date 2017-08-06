@@ -6,7 +6,7 @@ import { OverviewComponent } from './overview/overview.component';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../shared/auth.service';
-import { UserListService } from './shared/user-list.service';
+import { UserService } from './shared/user.service';
 import { WebSocketService } from './shared/web-socket.service';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import {
@@ -35,7 +35,7 @@ import { CreateGroupComponent } from './create-group/create-group.component';
     providers: [
         WebSocketService,
         AuthService,
-        UserListService,
+        UserService,
         GroupService
     ],
     bootstrap: [ScrumPokerComponent]

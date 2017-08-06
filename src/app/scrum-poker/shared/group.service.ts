@@ -6,7 +6,7 @@ import { WebSocketService } from './web-socket.service';
 import { Subject } from 'rxjs/Subject';
 import { Initializable } from '../../shared/initializable.interface';
 import { Group } from './group.model';
-import { UserListService } from './user-list.service';
+import { UserService } from './user.service';
 import { Observable } from 'rxjs/Observable';
 import { AuthService } from '../../shared/auth.service';
 
@@ -18,7 +18,6 @@ export class GroupService implements Resettable, Initializable {
 
     constructor(
         private _webSocketService: WebSocketService,
-        private _userListService: UserListService,
         private _authService: AuthService
     ) {}
 
@@ -28,23 +27,19 @@ export class GroupService implements Resettable, Initializable {
 
     public init(): Observable<any> {
         return this._loadGroups()
-            .flatMap((groups: Array<Group>) => {
-                return new Observable(observer => {
-                    this._groups = groups;
+            .map((groups: Array<Group>) => {
+                this._groups = groups;
 
-                    this._webSocketService
-                        .getObservable('group.created')
-                        .takeUntil(this._destroySubject)
-                        .subscribe(item => {
-                            const existingGroup = this.getById(item.id);
-                            if (!existingGroup) {
-                                const group: Group = new Group(item.id, item.name, item.userId);
-                                this._groups.push(group);
-                            }
-                        });
-                    observer.next();
-                    observer.complete();
-                });
+                this._webSocketService
+                    .getObservable('group.created')
+                    .takeUntil(this._destroySubject)
+                    .subscribe(item => {
+                        const existingGroup = this.getById(item.id);
+                        if (!existingGroup) {
+                            const group: Group = new Group(item.id, item.name, item.userId);
+                            this._groups.push(group);
+                        }
+                    });
             });
     }
 

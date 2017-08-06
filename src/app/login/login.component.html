@@ -1,6 +1,14 @@
 <div class="content">
     <h3>Login</h3>
-    <div fxLayout="column" fxLayoutGap="50px">
+    <div fxLayout="column" fxLayoutGap="25px">
+        <div fxLayout="column" fxLayoutGap="10px">
+            <div>
+                <span>Don't have an account yet?</span>
+            </div>
+            <div>
+                <button routerLink="/signup" md-raised-button data-color="primary">Signup</button>
+            </div>
+        </div>
         <form
             #loginForm="ngForm"
             (ngSubmit)="onSubmit(loginForm)"
@@ -38,13 +46,5 @@
                 </div>
             </div>
         </form>
-        <div fxLayout="column" fxLayoutGap="10px">
-            <div>
-                <span>You don't have an account yet?</span>
-            </div>
-            <div>
-                <button routerLink="/signup" md-raised-button data-color="primary">Signup</button>
-            </div>
-        </div>
     </div>
 </div>
