@@ -36,7 +36,7 @@ export class GroupService implements Resettable, Initializable {
                     .subscribe(item => {
                         const existingGroup = this.getById(item.id);
                         if (!existingGroup) {
-                            const group: Group = new Group(item.id, item.name, item.userId);
+                            const group: Group = new Group(item.id, item.name, item.userId, item.poker);
                             this._groups.push(group);
                         }
                     });
@@ -55,7 +55,7 @@ export class GroupService implements Resettable, Initializable {
                 name,
                 password
             }, (response) => {
-                const group = new Group(response.message.id, name, this._authService.userId);
+                const group = new Group(response.message.id, name, this._authService.userId, false);
                 observer.next(group);
                 observer.complete();
             });
@@ -66,7 +66,7 @@ export class GroupService implements Resettable, Initializable {
         return new Observable(observer => {
             this._webSocketService.emit('group.list', {}, result => {
                 const groups = result.message.map(item => {
-                    return new Group(item.id, item.name, item.userId);
+                    return new Group(item.id, item.name, item.userId, item.poker);
                 });
                 observer.next(groups);
                 observer.complete();

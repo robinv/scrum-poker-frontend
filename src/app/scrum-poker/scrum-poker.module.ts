@@ -10,7 +10,8 @@ import { UserService } from './shared/user.service';
 import { WebSocketService } from './shared/web-socket.service';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import {
-    MdButtonModule, MdCardModule, MdInputModule, MdListModule, MdProgressSpinnerModule
+    MdButtonModule, MdCardModule, MdIconModule, MdInputModule, MdListModule, MdProgressSpinnerModule,
+    MdTooltipModule
 } from '@angular/material';
 import { GroupService } from './shared/group.service';
 import { CreateGroupComponent } from './create-group/create-group.component';
@@ -30,7 +31,9 @@ import { CreateGroupComponent } from './create-group/create-group.component';
         MdListModule,
         MdButtonModule,
         MdInputModule,
-        MdProgressSpinnerModule
+        MdProgressSpinnerModule,
+        MdIconModule,
+        MdTooltipModule
     ],
     providers: [
         WebSocketService,

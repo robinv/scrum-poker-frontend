@@ -42,6 +42,8 @@
                         <p md-line>
                             <span>{{userService.getById(group.userId).name}}</span>
                         </p>
+                        <md-icon *ngIf="group.isPokerActive" mdTooltip="Poker is in progress" class="group-icon--active">check_circle</md-icon>
+                        <md-icon *ngIf="!group.isPokerActive" mdTooltip="Poker is not in progress" class="group-icon--inactive">pause_circle_filled</md-icon>
                     </md-list-item>
                 </md-list>
             </md-card-content>
