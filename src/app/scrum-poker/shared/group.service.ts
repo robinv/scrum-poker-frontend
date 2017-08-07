@@ -9,6 +9,7 @@ import { Group } from './group.model';
 import { UserService } from './user.service';
 import { Observable } from 'rxjs/Observable';
 import { AuthService } from '../../shared/auth.service';
+import { OwnUser } from './own-user.model';
 
 @Injectable()
 export class GroupService implements Resettable, Initializable {
@@ -18,7 +19,8 @@ export class GroupService implements Resettable, Initializable {
 
     constructor(
         private _webSocketService: WebSocketService,
-        private _authService: AuthService
+        private _authService: AuthService,
+        private _userService: UserService
     ) {}
 
     get groups(): Group[] {
@@ -49,13 +51,14 @@ export class GroupService implements Resettable, Initializable {
         });
     }
 
-    public create(name: String, password: String): Observable<Group>{
+    public create(name: String, password: String): Observable<Group> {
         return new Observable(observer => {
             this._webSocketService.emit('group.create', {
                 name,
                 password
             }, (response) => {
                 const group = new Group(response.message.id, name, this._authService.userId, false);
+                this._userService.getOwnUser().addGroupId(group.id);
                 observer.next(group);
                 observer.complete();
             });
@@ -72,6 +75,10 @@ export class GroupService implements Resettable, Initializable {
                 observer.complete();
             });
         });
+    }
+
+    public isUserGroup(user: OwnUser, groupId: String) {
+        return user.groupIds.includes(groupId);
     }
 
     reset(): void {

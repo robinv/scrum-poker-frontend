@@ -20,4 +20,9 @@ export class OverviewComponent {
             return a.name.localeCompare(b.name);
         });
     }
+
+    public isOwnGroup(groupId: String) {
+        const user = this.userService.getOwnUser();
+        return this.groupService.isUserGroup(user, groupId);
+    }
 }

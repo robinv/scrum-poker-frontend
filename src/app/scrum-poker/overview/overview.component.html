@@ -9,7 +9,10 @@
                 <md-card-content>
                     <md-list>
                         <md-list-item *ngFor="let user of getOrderedByName(userService.getOnlineUsers())">
-                            <h3 md-line>{{user.name}}</h3>
+                            <md-icon *ngIf="userService.isOwnUser(user)">star</md-icon>
+                            <h3 md-line>
+                                {{user.name}}
+                            </h3>
                             <p md-line>
                                 <span>{{user.id}}</span>
                             </p>
@@ -42,8 +45,9 @@
                         <p md-line>
                             <span>{{userService.getById(group.userId).name}}</span>
                         </p>
-                        <md-icon *ngIf="group.isPokerActive" mdTooltip="Poker is in progress" class="group-icon--active">check_circle</md-icon>
-                        <md-icon *ngIf="!group.isPokerActive" mdTooltip="Poker is not in progress" class="group-icon--inactive">pause_circle_filled</md-icon>
+                        <md-icon *ngIf="isOwnGroup(group.id)">star</md-icon>
+                        <md-icon *ngIf="group.isPokerActive" mdTooltip="Poker is in progress" class="group-icon--active">play_circle_outlined</md-icon>
+                        <md-icon *ngIf="!group.isPokerActive" mdTooltip="Poker is not in progress" class="group-icon--inactive">pause_circle_outlined</md-icon>
                     </md-list-item>
                 </md-list>
             </md-card-content>

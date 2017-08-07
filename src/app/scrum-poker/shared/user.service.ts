@@ -10,6 +10,7 @@ import { environment } from '../../../environments/environment';
 import { AuthService } from '../../shared/auth.service';
 import { Observable } from 'rxjs/Observable';
 import { Http, Response, Headers } from '@angular/http';
+import { OwnUser } from './own-user.model';
 
 @Injectable()
 export class UserService implements Resettable, Initializable {
@@ -30,38 +31,48 @@ export class UserService implements Resettable, Initializable {
     public init(): Observable<any> {
         this.reset();
         return this._loadUsers()
-            .flatMap((users: Array<User>) => {
+            .map((users: Array<User>) => {
+                this._users = users;
+                this._initListeners();
+                return users;
+            })
+            .flatMap(() => {
                 return new Observable(observer => {
-                    this._users = users;
-
-                    this._webSocketService
-                        .getObservable('user.joined')
-                        .takeUntil(this._destroySubject)
-                        .subscribe(item => {
-                            const user = this.getById(item.id);
-                            if (user) {
-                                user.online = true;
-                            } else {
-                                const user = new User(item.id, item.name);
-                                user.online = true;
-                                this._users.push(user);
-                            }
-                        });
-
-                    this._webSocketService
-                        .getObservable('user.left')
-                        .takeUntil(this._destroySubject)
-                        .subscribe(item => {
-                            const user = this.getById(item.id);
-                            if (user) {
-                                user.online = false;
-                            } else {
-                                this._users.push(new User(item.id, item.name));
-                            }
-                        });
-                    observer.next();
-                    observer.complete();
+                    this._webSocketService.emit('user.groups', {},result => {
+                        const ownUser = this.getOwnUser();
+                        ownUser.groupIds = result.message;
+                        observer.next();
+                        observer.complete();
+                    });
                 });
+            });
+    }
+
+    private _initListeners() {
+        this._webSocketService
+            .getObservable('user.joined')
+            .takeUntil(this._destroySubject)
+            .subscribe(item => {
+                let user = this.getById(item.id);
+                if (user) {
+                    user.online = true;
+                } else {
+                    user = this._createUserObject(item.id, item.name);
+                    user.online = true;
+                    this._users.push(user);
+                }
+            });
+
+        this._webSocketService
+            .getObservable('user.left')
+            .takeUntil(this._destroySubject)
+            .subscribe(item => {
+                const user = this.getById(item.id);
+                if (user) {
+                    user.online = false;
+                } else {
+                    this._users.push(this._createUserObject(item.id, item.name));
+                }
             });
     }
 
@@ -78,7 +89,7 @@ export class UserService implements Resettable, Initializable {
                     const users = response
                         .json()
                         .map(userData => {
-                            return new User(userData.id, userData.name);
+                            return this._createUserObject(userData.id, userData.name);
                         });
                     observer.next(users);
                     observer.complete();
@@ -128,5 +139,22 @@ export class UserService implements Resettable, Initializable {
         this._destroySubject.next();
         this._destroySubject.complete();
         this._destroySubject = new Subject();
+    }
+
+    public getOwnUser(): OwnUser {
+        return <OwnUser> this._users.find(user => {
+            return this.isOwnUser(user);
+        });
+    }
+
+    public isOwnUser(user: User) {
+        return user instanceof OwnUser;
+    }
+
+    private _createUserObject(id: String, name: String): User {
+        if (Object.is(id, this._authService.userId)) {
+            return new OwnUser(id, name);
+        }
+        return new User(id, name);
     }
 }
