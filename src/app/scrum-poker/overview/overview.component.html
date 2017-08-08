@@ -8,7 +8,7 @@
                 <md-card-subtitle>{{userService.getOnlineUsers().length}} Users are online</md-card-subtitle>
                 <md-card-content>
                     <md-list>
-                        <md-list-item *ngFor="let user of getOrderedByName(userService.getOnlineUsers())">
+                        <md-list-item *ngFor="let user of getOrderedUsers(userService.getOnlineUsers())">
                             <md-icon *ngIf="userService.isOwnUser(user)">star</md-icon>
                             <h3 md-line>
                                 {{user.name}}
@@ -24,7 +24,7 @@
                 </md-card-subtitle>
                 <md-card-content>
                     <md-list>
-                        <md-list-item *ngFor="let user of getOrderedByName(userService.getOfflineUsers())">
+                        <md-list-item *ngFor="let user of getOrderedUsers(userService.getOfflineUsers())">
                             <h3 md-line>{{user.name}}</h3>
                             <p md-line>
                                 <span>{{user.id}}</span>
@@ -40,7 +40,7 @@
             <md-card-subtitle>{{groupService.groups.length}} groups available</md-card-subtitle>
             <md-card-content>
                 <md-list>
-                    <md-list-item *ngFor="let group of getOrderedByName(groupService.groups)">
+                    <md-list-item *ngFor="let group of getOrderedGroups(groupService.groups)">
                         <h3 md-line>{{group.name}}</h3>
                         <p md-line>
                             <span>{{userService.getById(group.userId).name}}</span>
