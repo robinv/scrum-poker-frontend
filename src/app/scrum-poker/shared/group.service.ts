@@ -51,6 +51,18 @@ export class GroupService implements Resettable, Initializable {
         });
     }
 
+    public join(id: String, password: String): Observable<any> {
+        return new Observable(observer => {
+            this._webSocketService.emit('group.join', {
+                id,
+                password
+            }, response => {
+                observer.next();
+                observer.complete();
+            });
+        });
+    }
+
     public create(name: String, password: String): Observable<Group> {
         return new Observable(observer => {
             this._webSocketService.emit('group.create', {

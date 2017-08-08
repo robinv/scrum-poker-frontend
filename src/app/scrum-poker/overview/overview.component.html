@@ -9,13 +9,10 @@
                 <md-card-content>
                     <md-list>
                         <md-list-item *ngFor="let user of getOrderedUsers(userService.getOnlineUsers())">
-                            <md-icon *ngIf="userService.isOwnUser(user)">star</md-icon>
                             <h3 md-line>
-                                {{user.name}}
+                                <strong *ngIf="userService.isOwnUser(user)">{{user.name}}</strong>
+                                <span *ngIf="!userService.isOwnUser(user)">{{user.name}}</span>
                             </h3>
-                            <p md-line>
-                                <span>{{user.id}}</span>
-                            </p>
                         </md-list-item>
                     </md-list>
                 </md-card-content>
@@ -26,9 +23,6 @@
                     <md-list>
                         <md-list-item *ngFor="let user of getOrderedUsers(userService.getOfflineUsers())">
                             <h3 md-line>{{user.name}}</h3>
-                            <p md-line>
-                                <span>{{user.id}}</span>
-                            </p>
                         </md-list-item>
                     </md-list>
                 </md-card-content>
@@ -45,9 +39,16 @@
                         <p md-line>
                             <span>{{userService.getById(group.userId).name}}</span>
                         </p>
-                        <md-icon *ngIf="isOwnGroup(group.id)">star</md-icon>
-                        <md-icon *ngIf="group.isPokerActive" mdTooltip="Poker is in progress" class="group-icon--active">play_circle_outlined</md-icon>
-                        <md-icon *ngIf="!group.isPokerActive" mdTooltip="Poker is not in progress" class="group-icon--inactive">pause_circle_outlined</md-icon>
+                        <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="start center">
+                            <button md-raised-button *ngIf="isOwnGroup(group.id)" data-color="primary">
+                                Enter
+                            </button>
+                            <button md-raised-button *ngIf="!isOwnGroup(group.id)">
+                                Join
+                            </button>
+                            <md-icon *ngIf="group.isPokerActive" mdTooltip="Poker is in progress" class="group-icon--active">play_circle_outlined</md-icon>
+                            <md-icon *ngIf="!group.isPokerActive" mdTooltip="Poker is not in progress" class="group-icon--inactive">pause_circle_outlined</md-icon>
+                        </div>
                     </md-list-item>
                 </md-list>
             </md-card-content>
