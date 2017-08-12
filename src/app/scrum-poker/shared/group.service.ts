@@ -57,6 +57,17 @@ export class GroupService implements Resettable, Initializable {
                 id,
                 password
             }, response => {
+                if (!Object.is(response.status, 200)) {
+                    switch (response.status) {
+                        case 400:
+                            observer.error('invalid password');
+                            break;
+                        default:
+                            observer.error();
+                    }
+                    observer.complete();
+                    return;
+                }
                 observer.next();
                 observer.complete();
             });
@@ -69,6 +80,11 @@ export class GroupService implements Resettable, Initializable {
                 name,
                 password
             }, (response) => {
+                if (!Object.is(response.status, 200)) {
+                    observer.error();
+                    observer.complete();
+                    return;
+                }
                 const group = new Group(response.message.id, name, this._authService.userId, false);
                 this._userService.getOwnUser().addGroupId(group.id);
                 observer.next(group);

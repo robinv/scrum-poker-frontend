@@ -1,0 +1,28 @@
+<h3>{{data.groupName}}</h3>
+<p>Please enter the password</p>
+<form
+    #groupJoinForm="ngForm"
+    (ngSubmit)="onSubmit(groupJoinForm)"
+    fxLayout="column"
+    fxLayoutGap="10px"
+>
+    <md-input-container>
+        <input
+            [disabled]="isLoading"
+            mdInput
+            name="password"
+            required
+            type="password"
+            placeholder="Password"
+            [(ngModel)]="password"
+        />
+        <md-error>This field is required</md-error>
+    </md-input-container>
+    <div fxLayout="column" fxLayoutGap="10px">
+        <md-error *ngIf="formError">{{formError}}</md-error>
+        <div fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="start center">
+            <button [disabled]="isLoading" md-raised-button data-color="primary">Login</button>
+            <md-spinner *ngIf="isLoading" mode="indeterminate"></md-spinner>
+        </div>
+    </div>
+</form>

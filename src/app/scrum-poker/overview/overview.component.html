@@ -1,7 +1,4 @@
 <div fxLayout="row" fxFlex fxLayoutWrap>
-    <md-card class="card" fxFlex="100">
-        <button md-raised-button color="primary" routerLink="/scrum-poker/create-group">Create Group</button>
-    </md-card>
     <div fxFlex="calc(50% - 10px)" fxFlex.xs="calc(100% - 10px)">
         <md-card class="card">
             <md-card-content>
@@ -29,8 +26,10 @@
             </md-card-content>
         </md-card>
     </div>
-    <div fxFlex="calc(50% - 10px)" fxFlex.xs="calc(100% - 10px)">
-        <md-card class="card">
+        <md-card class="card" fxFlex="calc(50% - 10px)" fxFlex.xs="calc(100% - 10px)">
+            <md-card-content>
+                <button md-raised-button color="primary" routerLink="/scrum-poker/create-group">Create Group</button>
+            </md-card-content>
             <md-card-subtitle>{{groupService.groups.length}} groups available</md-card-subtitle>
             <md-card-content>
                 <md-list>
@@ -40,10 +39,10 @@
                             <span>{{userService.getById(group.userId).name}}</span>
                         </p>
                         <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="start center">
-                            <button md-raised-button *ngIf="isOwnGroup(group.id)" data-color="primary">
+                            <button md-raised-button *ngIf="isJoinedGroup(group.id)" data-color="primary">
                                 Enter
                             </button>
-                            <button md-raised-button *ngIf="!isOwnGroup(group.id)">
+                            <button (click)="joinGroup(group)" md-raised-button *ngIf="!isJoinedGroup(group.id)">
                                 Join
                             </button>
                             <md-icon *ngIf="group.isPokerActive" mdTooltip="Poker is in progress" class="group-icon--active">play_circle_outlined</md-icon>
@@ -53,6 +52,6 @@
                 </md-list>
             </md-card-content>
         </md-card>
-    </div>
+
 </div>
 
