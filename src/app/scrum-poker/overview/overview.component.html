@@ -2,7 +2,7 @@
     <div fxFlex="calc(50% - 10px)" fxFlex.xs="calc(100% - 10px)">
         <md-card class="card">
             <md-card-content>
-                <md-card-subtitle>{{userService.getOnlineUsers().length}} Users are online</md-card-subtitle>
+                <md-card-subtitle>{{userService.getOnlineUsers().length}} Users online</md-card-subtitle>
                 <md-card-content>
                     <md-list>
                         <md-list-item *ngFor="let user of getOrderedUsers(userService.getOnlineUsers())">
@@ -14,7 +14,7 @@
                     </md-list>
                 </md-card-content>
                 <md-card-subtitle>
-                    {{userService.getOfflineUsers().length}} Users are offline
+                    {{userService.getOfflineUsers().length}} Users offline
                 </md-card-subtitle>
                 <md-card-content>
                     <md-list>
@@ -39,7 +39,7 @@
                             <span>{{userService.getById(group.userId).name}}</span>
                         </p>
                         <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="start center">
-                            <button md-raised-button *ngIf="isJoinedGroup(group.id)" data-color="primary">
+                            <button [routerLink]="['group', group.id]" md-raised-button *ngIf="isJoinedGroup(group.id)" data-color="primary">
                                 Enter
                             </button>
                             <button (click)="joinGroup(group)" md-raised-button *ngIf="!isJoinedGroup(group.id)">

@@ -51,4 +51,8 @@ export class JoinGroupDialogComponent {
                 }
             });
     }
+
+    public close() {
+        this._mdDialogRef.close();
+    }
 }

@@ -7,6 +7,7 @@ import { LoginComponent } from './login/login.component';
 import { LoginGuard } from './shared/login.guard';
 import { OverviewComponent } from './scrum-poker/overview/overview.component';
 import { CreateGroupComponent } from './scrum-poker/create-group/create-group.component';
+import { GroupComponent } from './scrum-poker/group/group.component';
 
 const routes: Routes = [
     {
@@ -31,6 +32,10 @@ const routes: Routes = [
             {
                 path: 'create-group',
                 component: CreateGroupComponent
+            },
+            {
+                path: 'group/:id',
+                component: GroupComponent
             }
         ]
     }

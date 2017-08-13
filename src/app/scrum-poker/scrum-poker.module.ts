@@ -16,13 +16,15 @@ import {
 import { GroupService } from './shared/group.service';
 import { CreateGroupComponent } from './create-group/create-group.component';
 import { JoinGroupDialogComponent } from './overview/join-group-dialog/join-group-dialog.component';
+import { GroupComponent } from './group/group.component';
 
 @NgModule({
     declarations: [
         ScrumPokerComponent,
         OverviewComponent,
         CreateGroupComponent,
-        JoinGroupDialogComponent
+        JoinGroupDialogComponent,
+        GroupComponent
     ],
     imports: [
         BrowserModule,
