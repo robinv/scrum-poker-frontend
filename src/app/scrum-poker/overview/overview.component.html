@@ -45,8 +45,8 @@
                             <button (click)="joinGroup(group)" md-raised-button *ngIf="!isJoinedGroup(group.id)">
                                 Join
                             </button>
-                            <md-icon *ngIf="group.isPokerActive" mdTooltip="Poker is in progress" class="group-icon--active">play_circle_outlined</md-icon>
-                            <md-icon *ngIf="!group.isPokerActive" mdTooltip="Poker is not in progress" class="group-icon--inactive">pause_circle_outlined</md-icon>
+                            <md-icon *ngIf="group.isPokerActive" mdTooltip="Scrum Poker is in progress" class="group-icon--active">play_circle_outlined</md-icon>
+                            <md-icon *ngIf="!group.isPokerActive" mdTooltip="Scrum Poker is not in progress" class="group-icon--inactive">pause_circle_outlined</md-icon>
                         </div>
                     </md-list-item>
                 </md-list>

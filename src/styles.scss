@@ -9,3 +9,12 @@ body {
     padding: 20px;
 }
 
+.group-icon {
+    &--active {
+        color: green;
+    }
+
+    &--inactive {
+        color: red;
+    }
+}

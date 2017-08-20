@@ -1,1 +1,19 @@
-<h3>{{group.name}}</h3>
+<h1>{{group.name}}</h1>
+<div *ngIf="group.userId === ownUser.id">
+    <button (click)="startPoker()" md-raised-button data-color="primary" *ngIf="!group.isPokerActive">
+        <md-icon>play_circle_outlined</md-icon>
+        Start Poker
+    </button>
+    <button (click)="endPoker()" md-raised-button data-color="primary" *ngIf="group.isPokerActive">
+        <md-icon>pause_circle_outlined</md-icon>
+        Stop Poker
+    </button>
+</div>
+<p *ngIf="group.isPokerActive" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="4px">
+    <md-icon class="group-icon--active">play_circle_outlined</md-icon>
+    <span>Scrum Poker is currently running</span>
+</p>
+<p *ngIf="!group.isPokerActive" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="4px">
+    <md-icon class="group-icon--inactive">pause_circle_outlined</md-icon>
+    <span>Scrum Poker is currently not running</span>
+</p>

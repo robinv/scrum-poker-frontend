@@ -26,4 +26,8 @@ export class Group {
     get isPokerActive(): Boolean {
         return this._isPokerActive;
     }
+
+    set isPokerActive(isPokerActive: Boolean) {
+        this._isPokerActive = isPokerActive;
+    }
 }

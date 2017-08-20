@@ -42,6 +42,26 @@ export class GroupService implements Resettable, Initializable {
                             this._groups.push(group);
                         }
                     });
+
+                this._webSocketService
+                    .getObservable('group.poker.started')
+                    .takeUntil(this._destroySubject)
+                    .subscribe(item => {
+                        const group = this.getById(item.id);
+                        if (group) {
+                            group.isPokerActive = true;
+                        }
+                    });
+
+                this._webSocketService
+                    .getObservable('group.poker.ended')
+                    .takeUntil(this._destroySubject)
+                    .subscribe(item => {
+                        const group = this.getById(item.id);
+                        if (group) {
+                            group.isPokerActive = false;
+                        }
+                    });
             });
     }
 
@@ -88,6 +108,38 @@ export class GroupService implements Resettable, Initializable {
                 const group = new Group(response.message.id, name, this._authService.userId, false);
                 this._userService.getOwnUser().addGroupId(group.id);
                 observer.next(group);
+                observer.complete();
+            });
+        });
+    }
+
+    public startPoker(id: String): Observable<any> {
+        return new Observable(observer => {
+            this._webSocketService.emit('group.poker.start', {
+                id
+            }, (response) => {
+                if (!Object.is(response.status, 200)) {
+                    observer.error();
+                    observer.complete();
+                    return;
+                }
+                observer.next();
+                observer.complete();
+            });
+        });
+    }
+
+    public endPoker(id: String): Observable<any> {
+        return new Observable(observer => {
+            this._webSocketService.emit('group.poker.end', {
+                id
+            }, (response) => {
+                if (!Object.is(response.status, 200)) {
+                    observer.error();
+                    observer.complete();
+                    return;
+                }
+                observer.next();
                 observer.complete();
             });
         });
