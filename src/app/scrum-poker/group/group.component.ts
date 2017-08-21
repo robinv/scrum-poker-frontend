@@ -14,6 +14,9 @@ export class GroupComponent implements OnInit {
 
     public group: Group;
     public ownUser: OwnUser;
+    public possibleBets: Number[] = [
+        1, 2, 3, 5, 8, 13, 20, 30, 40, 100
+    ];
 
     constructor(
         private _route: ActivatedRoute,
@@ -50,5 +53,9 @@ export class GroupComponent implements OnInit {
         this._groupService
             .endPoker(this.group.id)
             .subscribe();
+    }
+
+    public placeBet(bet: Number): void {
+        this._groupService.placeBet(this.group, bet);
     }
 }

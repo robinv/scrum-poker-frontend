@@ -1,8 +1,11 @@
+import { Bet } from './bet.model';
+
 export class Group {
     private _id: String;
     private _name: String;
     private _userId: String;
     private _isPokerActive: Boolean;
+    private _bets: Bet[] = [];
 
     constructor(id: String, name: String, userId: String, isPokerActive: Boolean) {
         this._id = id;
@@ -29,5 +32,17 @@ export class Group {
 
     set isPokerActive(isPokerActive: Boolean) {
         this._isPokerActive = isPokerActive;
+    }
+
+    get bets(): Bet[] {
+        return this._bets;
+    }
+
+    set bets(bets: Bet[]) {
+        this._bets = bets;
+    }
+
+    public addBet(bet: Bet) {
+        this._bets.push(bet);
     }
 }

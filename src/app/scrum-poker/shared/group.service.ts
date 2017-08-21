@@ -10,6 +10,7 @@ import { UserService } from './user.service';
 import { Observable } from 'rxjs/Observable';
 import { AuthService } from '../../shared/auth.service';
 import { OwnUser } from './own-user.model';
+import { Bet } from './bet.model';
 
 @Injectable()
 export class GroupService implements Resettable, Initializable {
@@ -29,6 +30,7 @@ export class GroupService implements Resettable, Initializable {
 
     public init(): Observable<any> {
         return this._loadGroups()
+            .flatMap(this._loadBets)
             .map((groups: Array<Group>) => {
                 this._groups = groups;
 
@@ -48,9 +50,8 @@ export class GroupService implements Resettable, Initializable {
                     .takeUntil(this._destroySubject)
                     .subscribe(item => {
                         const group = this.getById(item.id);
-                        if (group) {
-                            group.isPokerActive = true;
-                        }
+                        group.isPokerActive = true;
+                        group.bets = [];
                     });
 
                 this._webSocketService
@@ -58,8 +59,30 @@ export class GroupService implements Resettable, Initializable {
                     .takeUntil(this._destroySubject)
                     .subscribe(item => {
                         const group = this.getById(item.id);
-                        if (group) {
-                            group.isPokerActive = false;
+
+                        group.isPokerActive = false;
+
+                        const bets = item.bets.map(data => {
+                            const user = this._userService.getById(data.userId);
+                            const bet = new Bet(user);
+                            bet.bet = data.bet;
+                            return bet;
+                        });
+                        group.bets = bets;
+                    });
+
+                this._webSocketService
+                    .getObservable('group.poker.betted')
+                    .takeUntil(this._destroySubject)
+                    .subscribe(item => {
+                        const group = this.getById(item.id);
+                        const user = this._userService.getById(item.userId);
+                        const existingBet = group.bets.find(bet => {
+                            return Object.is(bet.user.id, user.id);
+                        });
+                        if (!existingBet) {
+                            const bet = new Bet(user);
+                            group.addBet(bet);
                         }
                     });
             });
@@ -145,7 +168,7 @@ export class GroupService implements Resettable, Initializable {
         });
     }
 
-    private _loadGroups(): Observable<Array<Group>> {
+    private _loadGroups(): Observable<Group[]> {
         return new Observable(observer => {
             this._webSocketService.emit('group.list', {}, result => {
                 const groups = result.message.map(item => {
@@ -157,8 +180,22 @@ export class GroupService implements Resettable, Initializable {
         });
     }
 
+    private _loadBets(groups: Group[]): Observable<Group[]> {
+        return new Observable(observer => {
+            observer.next(groups);
+            observer.complete();
+        });
+    }
+
     public isUserGroup(user: OwnUser, groupId: String) {
         return user.groupIds.includes(groupId);
+    }
+
+    public placeBet(group: Group, bet: Number) {
+        this._webSocketService.emit('group.poker.bet', {
+            id: group.id,
+            bet: bet
+        });
     }
 
     reset(): void {

@@ -9,11 +9,37 @@
         Stop Poker
     </button>
 </div>
-<p *ngIf="group.isPokerActive" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="4px">
-    <md-icon class="group-icon--active">play_circle_outlined</md-icon>
-    <span>Scrum Poker is currently running</span>
-</p>
-<p *ngIf="!group.isPokerActive" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="4px">
-    <md-icon class="group-icon--inactive">pause_circle_outlined</md-icon>
-    <span>Scrum Poker is currently not running</span>
-</p>
+
+<div *ngIf="!group.isPokerActive">
+    <p fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="4px">
+        <md-icon class="group-icon--inactive">pause_circle_outlined</md-icon>
+        <span>Scrum Poker is currently not running</span>
+    </p>
+    <h2>Recent bets</h2>
+    <span *ngIf="!group.bets.length">There are no recent bets.</span>
+    <div fxLayout="row" fxLayoutWrap fxLayoutGap="10px">
+        <md-card *ngFor="let bet of group.bets">
+            {{bet.user.name}}: {{bet.bet}}
+        </md-card>
+    </div>
+</div>
+
+<div *ngIf="group.isPokerActive">
+    <p fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="4px">
+        <md-icon class="group-icon--active">play_circle_outlined</md-icon>
+        <span>Scrum Poker is currently running</span>
+    </p>
+    <h2>Place your bet</h2>
+    <div fxLayout="row" fxLayoutWrap fxLayoutGap="10px">
+        <md-card *ngFor="let possibleBet of this.possibleBets" (click)="placeBet(possibleBet)">
+            {{possibleBet}}
+        </md-card>
+    </div>
+
+    <h2>Current bets</h2>
+    <div fxLayout="row" fxLayoutWrap fxLayoutGap="10px">
+        <md-card *ngFor="let bet of group.bets">
+            {{bet.user.name}}
+        </md-card>
+    </div>
+</div>
