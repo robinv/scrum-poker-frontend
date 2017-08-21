@@ -4,7 +4,6 @@ import { UserService } from '../shared/user.service';
 import { GroupService } from '../shared/group.service';
 import { Group } from '../shared/group.model';
 import { OwnUser } from '../shared/own-user.model';
-import { MdSnackBar } from '@angular/material';
 
 @Component({
     selector: 'app-scrum-poker-group',
@@ -20,8 +19,7 @@ export class GroupComponent implements OnInit {
         private _route: ActivatedRoute,
         private _userService: UserService,
         private _router: Router,
-        private _groupService: GroupService,
-        private _snackBar: MdSnackBar
+        private _groupService: GroupService
     ) { }
 
     public ngOnInit(): void {
@@ -42,11 +40,7 @@ export class GroupComponent implements OnInit {
         }
         this._groupService
             .startPoker(this.group.id)
-            .subscribe(() => {
-                this._snackBar.open('Scrum Poker started', null, {
-                    duration: 2000
-                });
-            });
+            .subscribe();
     }
 
     public endPoker(): void {
@@ -55,10 +49,6 @@ export class GroupComponent implements OnInit {
         }
         this._groupService
             .endPoker(this.group.id)
-            .subscribe(() => {
-                this._snackBar.open('Scrum Poker ended', null, {
-                    duration: 2000
-                });
-            });
+            .subscribe();
     }
 }
