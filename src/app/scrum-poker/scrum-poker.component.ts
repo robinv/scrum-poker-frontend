@@ -40,7 +40,7 @@ export class ScrumPokerComponent implements OnDestroy, OnInit {
                 const userListInit = this.userService.init();
                 const groupListInit = this._groupListService.init();
 
-                Observable.forkJoin(userListInit, groupListInit)
+                Observable.forkJoin([userListInit, groupListInit])
                     .subscribe(() => {
                         this.onLoadingFinished();
                     });

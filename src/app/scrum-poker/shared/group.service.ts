@@ -6,11 +6,11 @@ import { WebSocketService } from './web-socket.service';
 import { Subject } from 'rxjs/Subject';
 import { Initializable } from '../../shared/initializable.interface';
 import { Group } from './group.model';
-import { UserService } from './user.service';
 import { Observable } from 'rxjs/Observable';
 import { AuthService } from '../../shared/auth.service';
 import { OwnUser } from './own-user.model';
 import { Bet } from './bet.model';
+import { UserService } from './user.service';
 
 @Injectable()
 export class GroupService implements Resettable, Initializable {
@@ -30,7 +30,9 @@ export class GroupService implements Resettable, Initializable {
 
     public init(): Observable<any> {
         return this._loadGroups()
-            .flatMap(this._loadBets)
+            .flatMap(groups => {
+                return this._loadBets(groups);
+            })
             .map((groups: Array<Group>) => {
                 this._groups = groups;
 
@@ -63,8 +65,7 @@ export class GroupService implements Resettable, Initializable {
                         group.isPokerActive = false;
 
                         const bets = item.bets.map(data => {
-                            const user = this._userService.getById(data.userId);
-                            const bet = new Bet(user);
+                            const bet = new Bet(data.userId);
                             bet.bet = data.bet;
                             return bet;
                         });
@@ -76,12 +77,11 @@ export class GroupService implements Resettable, Initializable {
                     .takeUntil(this._destroySubject)
                     .subscribe(item => {
                         const group = this.getById(item.id);
-                        const user = this._userService.getById(item.userId);
                         const existingBet = group.bets.find(bet => {
-                            return Object.is(bet.user.id, user.id);
+                            return Object.is(bet.userId, item.userId);
                         });
                         if (!existingBet) {
-                            const bet = new Bet(user);
+                            const bet = new Bet(item.userId);
                             group.addBet(bet);
                         }
                     });
@@ -96,92 +96,117 @@ export class GroupService implements Resettable, Initializable {
 
     public join(id: String, password: String): Observable<any> {
         return new Observable(observer => {
-            this._webSocketService.emit('group.join', {
-                id,
-                password
-            }, response => {
-                if (!Object.is(response.status, 200)) {
-                    switch (response.status) {
-                        case 400:
-                            observer.error('invalid password');
-                            break;
-                        default:
-                            observer.error();
+            this._webSocketService
+                .emit('group.join', {
+                    id,
+                    password
+                })
+                .subscribe(result => {
+                    if (!Object.is(result.status, 200)) {
+                        switch (result.status) {
+                            case 400:
+                                observer.error('invalid password');
+                                break;
+                            default:
+                                observer.error();
+                        }
+                        observer.complete();
+                        return;
                     }
+                    observer.next();
                     observer.complete();
-                    return;
-                }
-                observer.next();
-                observer.complete();
-            });
+                });
         });
     }
 
     public create(name: String, password: String): Observable<Group> {
         return new Observable(observer => {
-            this._webSocketService.emit('group.create', {
-                name,
-                password
-            }, (response) => {
-                if (!Object.is(response.status, 200)) {
-                    observer.error();
+            this._webSocketService
+                .emit('group.create', {
+                    name,
+                    password
+                })
+                .subscribe(result => {
+                    if (!Object.is(result.status, 200)) {
+                        observer.error();
+                        observer.complete();
+                        return;
+                    }
+                    const group = new Group(result.message.id, name, this._authService.userId, false);
+                    this._userService.getOwnUser().addGroupId(group.id);
+                    observer.next(group);
                     observer.complete();
-                    return;
-                }
-                const group = new Group(response.message.id, name, this._authService.userId, false);
-                this._userService.getOwnUser().addGroupId(group.id);
-                observer.next(group);
-                observer.complete();
-            });
+                });
         });
     }
 
     public startPoker(id: String): Observable<any> {
         return new Observable(observer => {
-            this._webSocketService.emit('group.poker.start', {
-                id
-            }, (response) => {
-                if (!Object.is(response.status, 200)) {
-                    observer.error();
+            this._webSocketService
+                .emit('group.poker.start', {
+                    id
+                })
+                .subscribe(result => {
+                    if (!Object.is(result.status, 200)) {
+                        observer.error();
+                        observer.complete();
+                        return;
+                    }
+                    observer.next();
                     observer.complete();
-                    return;
-                }
-                observer.next();
-                observer.complete();
-            });
+                });
         });
     }
 
     public endPoker(id: String): Observable<any> {
         return new Observable(observer => {
-            this._webSocketService.emit('group.poker.end', {
-                id
-            }, (response) => {
-                if (!Object.is(response.status, 200)) {
-                    observer.error();
+            this._webSocketService
+                .emit('group.poker.end', {
+                    id
+                })
+                .subscribe(result => {
+                    if (!Object.is(result.status, 200)) {
+                        observer.error();
+                        observer.complete();
+                        return;
+                    }
+                    observer.next();
                     observer.complete();
-                    return;
-                }
-                observer.next();
-                observer.complete();
-            });
+                });
         });
     }
 
     private _loadGroups(): Observable<Group[]> {
         return new Observable(observer => {
-            this._webSocketService.emit('group.list', {}, result => {
-                const groups = result.message.map(item => {
-                    return new Group(item.id, item.name, item.userId, item.poker);
+            console.log(this._webSocketService);
+            this._webSocketService
+                .emit('group.list', {})
+                .subscribe(result => {
+                    const groups = result.message.map(item => {
+                        return new Group(item.id, item.name, item.userId, item.poker);
+                    });
+                    observer.next(groups);
+                    observer.complete();
                 });
-                observer.next(groups);
-                observer.complete();
-            });
         });
     }
 
     private _loadBets(groups: Group[]): Observable<Group[]> {
         return new Observable(observer => {
+            console.log(this._webSocketService);
+            const observables = groups
+                .map(group => {
+                    this._webSocketService
+                        .emit('group.poker.bets',{id: group.id})
+                        .subscribe();
+                }
+            );
+
+            if (!observables.length) {
+                observer.next(groups);
+                observer.complete();
+            }
+
             observer.next(groups);
             observer.complete();
         });
@@ -192,10 +217,12 @@ export class GroupService implements Resettable, Initializable {
     }
 
     public placeBet(group: Group, bet: Number) {
-        this._webSocketService.emit('group.poker.bet', {
-            id: group.id,
-            bet: bet
-        });
+        this._webSocketService
+            .emit('group.poker.bet', {
+                id: group.id,
+                bet: bet
+            })
+            .subscribe();
     }
 
     reset(): void {

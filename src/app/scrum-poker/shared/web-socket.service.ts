@@ -54,11 +54,12 @@ export class WebSocketService implements Resettable {
         return this._observables.get(event);
     }
 
-    public emit(event: string, message: any, onSuccess?: Function): void {
-        this._socket.emit(event, message, function(response) {
-            if (onSuccess) {
-                onSuccess(response);
-            }
+    public emit(event: string, message: any): Observable<any> {
+        return new Observable(observer => {
+            this._socket.emit(event, message, function(response) {
+                observer.next(response);
+                observer.complete();
+            });
         });
     }
 

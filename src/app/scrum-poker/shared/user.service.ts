@@ -38,12 +38,14 @@ export class UserService implements Resettable, Initializable {
             })
             .flatMap(() => {
                 return new Observable(observer => {
-                    this._webSocketService.emit('user.groups', {},result => {
-                        const ownUser = this.getOwnUser();
-                        ownUser.groupIds = result.message;
-                        observer.next();
-                        observer.complete();
-                    });
+                    this._webSocketService
+                        .emit('user.groups', {})
+                        .subscribe(result => {
+                            const ownUser = this.getOwnUser();
+                            ownUser.groupIds = result.message;
+                            observer.next();
+                            observer.complete();
+                        });
                 });
             });
     }
@@ -97,18 +99,20 @@ export class UserService implements Resettable, Initializable {
             })
             .flatMap((users: Array<User>) => {
                 return new Observable(observer => {
-                    this._webSocketService.emit('user.list', {}, result => {
-                        result.message.forEach(item => {
-                            const existingUser = users.find(user => {
-                                return Object.is(item.id, user.id);
+                    this._webSocketService
+                        .emit('user.list', {})
+                        .subscribe(result => {
+                            result.message.forEach(item => {
+                                const existingUser = users.find(user => {
+                                    return Object.is(item.id, user.id);
+                                });
+                                if (existingUser) {
+                                    existingUser.online = true;
+                                }
                             });
-                            if (existingUser) {
-                                existingUser.online = true;
-                            }
+                            observer.next(users);
+                            observer.complete();
                         });
-                        observer.next(users);
-                        observer.complete();
-                    });
                 });
             })
             .catch((error: Response) => {

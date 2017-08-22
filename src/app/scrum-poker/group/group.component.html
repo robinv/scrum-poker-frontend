@@ -19,7 +19,7 @@
     <span *ngIf="!group.bets.length">There are no recent bets.</span>
     <div fxLayout="row" fxLayoutWrap fxLayoutGap="10px">
         <md-card *ngFor="let bet of group.bets">
-            {{bet.user.name}}: {{bet.bet}}
+            {{userService.getById(bet.userId).name}}: {{bet.bet}}
         </md-card>
     </div>
 </div>
@@ -39,7 +39,7 @@
     <h2>Current bets</h2>
     <div fxLayout="row" fxLayoutWrap fxLayoutGap="10px">
         <md-card *ngFor="let bet of group.bets">
-            {{bet.user.name}}
+            {{userService.getById(bet.userId).name}}
         </md-card>
     </div>
 </div>

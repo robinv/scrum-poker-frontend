@@ -1,15 +1,13 @@
-import { User } from './user.model';
-
 export class Bet {
-    private _user: User;
+    private _userId: String;
     private _bet: Number;
 
-    constructor(user: User) {
-        this._user = user;
+    constructor(userId: String) {
+        this._userId = userId;
     }
 
-    get user(): User {
-        return this._user;
+    get userId(): String {
+        return this._userId;
     }
 
     get bet(): Number {

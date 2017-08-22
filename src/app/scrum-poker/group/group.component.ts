@@ -19,26 +19,26 @@ export class GroupComponent implements OnInit {
     ];
 
     constructor(
+        public userService: UserService,
         private _route: ActivatedRoute,
-        private _userService: UserService,
         private _router: Router,
         private _groupService: GroupService
     ) { }
 
     public ngOnInit(): void {
         this._route.params.subscribe(params => {
-            if (!this._userService.getOwnUser().groupIds.includes(params.id)) {
+            if (!this.userService.getOwnUser().groupIds.includes(params.id)) {
                 this._router.navigate(['/scrum-poker']);
                 return;
             }
 
             this.group = this._groupService.getById(params.id);
-            this.ownUser = this._userService.getOwnUser();
+            this.ownUser = this.userService.getOwnUser();
         });
     }
 
     public startPoker(): void {
-        if (!Object.is(this._userService.getOwnUser().id, this.group.userId)) {
+        if (!Object.is(this.userService.getOwnUser().id, this.group.userId)) {
             return;
         }
         this._groupService
@@ -47,7 +47,7 @@ export class GroupComponent implements OnInit {
     }
 
     public endPoker(): void {
-        if (!Object.is(this._userService.getOwnUser().id, this.group.userId)) {
+        if (!Object.is(this.userService.getOwnUser().id, this.group.userId)) {
             return;
         }
         this._groupService
