@@ -31,6 +31,9 @@ export class GroupService implements Resettable, Initializable {
     public init(): Observable<any> {
         return this._loadGroups()
             .flatMap(groups => {
+                return this._loadUsers(groups);
+            })
+            .flatMap(groups => {
                 return this._loadBets(groups);
             })
             .map((groups: Array<Group>) => {
@@ -85,6 +88,14 @@ export class GroupService implements Resettable, Initializable {
                             group.addBet(bet);
                         }
                     });
+
+                this._webSocketService
+                    .getObservable('group.joined')
+                    .takeUntil(this._destroySubject)
+                    .subscribe(item => {
+                        const group = this.getById(item.id);
+                        group.addUserId(item.userId);
+                    });
             });
     }
 
@@ -113,6 +124,7 @@ export class GroupService implements Resettable, Initializable {
                         observer.complete();
                         return;
                     }
+                    // todo add loading of users and bets
                     observer.next();
                     observer.complete();
                 });
@@ -178,7 +190,6 @@ export class GroupService implements Resettable, Initializable {
 
     private _loadGroups(): Observable<Group[]> {
         return new Observable(observer => {
-            console.log(this._webSocketService);
             this._webSocketService
                 .emit('group.list', {})
                 .subscribe(result => {
@@ -191,14 +202,53 @@ export class GroupService implements Resettable, Initializable {
         });
     }
 
-    private _loadBets(groups: Group[]): Observable<Group[]> {
+    private _loadUsers(groups: Group[]): Observable<Group[]> {
         return new Observable(observer => {
-            console.log(this._webSocketService);
             const observables = groups
                 .map(group => {
-                    this._webSocketService
+                        return this._webSocketService
+                            .emit('group.users',{id: group.id})
+                            .map(result => {
+                                return {
+                                    response: result,
+                                    group
+                                };
+                            });
+                    }
+                );
+
+            if (!observables.length) {
+                observer.next(groups);
+                observer.complete();
+            }
+
+            Observable.forkJoin(observables)
+                .subscribe(results => {
+                    results.forEach(result => {
+                        if (Object.is(result.response.status, 200)) {
+                            const userIds = result.response.message;
+                            result.group.userIds = userIds;
+                        }
+                    });
+                    observer.next(groups);
+                    observer.complete();
+                });
+
+        });
+    }
+
+    private _loadBets(groups: Group[]): Observable<Group[]> {
+        return new Observable(observer => {
+            const observables = groups
+                .map(group => {
+                    return this._webSocketService
                         .emit('group.poker.bets',{id: group.id})
-                        .subscribe();
+                        .map(result => {
+                            return {
+                                response: result,
+                                group
+                            };
+                        });
                 }
             );
 
@@ -207,8 +257,24 @@ export class GroupService implements Resettable, Initializable {
                 observer.complete();
             }
 
-            observer.next(groups);
-            observer.complete();
+            Observable.forkJoin(observables)
+                .subscribe(results => {
+                    results.forEach(result => {
+                        if (Object.is(result.response.status, 200)) {
+                            const bets = result.response.message.map(data => {
+                                const bet = new Bet(data.userId);
+                                if (data.bet) {
+                                    bet.bet = data.bet;
+                                }
+                                return bet;
+                            });
+                            result.group.bets = bets;
+                        }
+                    });
+                    observer.next(groups);
+                    observer.complete();
+                });
+
         });
     }
 

@@ -6,6 +6,7 @@ export class Group {
     private _userId: String;
     private _isPokerActive: Boolean;
     private _bets: Bet[] = [];
+    private _userIds: String[] = [];
 
     constructor(id: String, name: String, userId: String, isPokerActive: Boolean) {
         this._id = id;
@@ -40,6 +41,20 @@ export class Group {
 
     set bets(bets: Bet[]) {
         this._bets = bets;
+    }
+
+    get userIds(): String[] {
+        return this._userIds;
+    }
+
+    set userIds(userIds: String[]) {
+        this._userIds = userIds;
+    }
+
+    public addUserId(userId: String) {
+        if (!this._userIds.includes(userId)) {
+            this._userIds.push(userId);
+        }
     }
 
     public addBet(bet: Bet) {
