@@ -146,14 +146,10 @@ export class GroupService implements Resettable, Initializable {
                                 }
                                 return bet;
                             });
-                        });
 
-                    /**
-                     *
-                     */
-                    // todo add loading of users and bets
-                    observer.next();
-                    observer.complete();
+                            observer.next();
+                            observer.complete();
+                        });
                 });
         });
     }
