@@ -124,6 +124,33 @@ export class GroupService implements Resettable, Initializable {
                         observer.complete();
                         return;
                     }
+                    const groupListObservable = this._webSocketService.emit('group.list', {});
+                    const groupUsersObservable = this._webSocketService.emit('group.users', {id});
+                    const groupBetsObservable = this._webSocketService.emit('group.poker.bets', {id});
+
+
+                    Observable.forkJoin([groupListObservable, groupUsersObservable, groupBetsObservable])
+                        .subscribe(([groupListResult, groupUsersResult, groupBetsResult]) => {
+                            const cachedGroup = this.getById(id);
+
+                            groupListResult.message.forEach(groupData => {
+                                if (Object.is(id, groupData.id)) {
+                                    cachedGroup.isPokerActive = groupData.poker;
+                                }
+                            });
+                            cachedGroup.userIds = groupUsersResult.message;
+                            cachedGroup.bets = groupBetsResult.message.map(betData => {
+                                const bet = new Bet(betData.userId);
+                                if (betData.bet) {
+                                    bet.bet = betData.bet;
+                                }
+                                return bet;
+                            });
+                        });
+
+                    /**
+                     *
+                     */
                     // todo add loading of users and bets
                     observer.next();
                     observer.complete();
