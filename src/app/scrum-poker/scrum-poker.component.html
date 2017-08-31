@@ -1,5 +1,5 @@
-<div *ngIf="isLoading" class="content">
-    <md-spinner></md-spinner>
+<div fxFill fxLayout="column" fxLayoutAlign="center center" *ngIf="isLoading" class="content">
+    <md-spinner ></md-spinner>
 </div>
 <div fxLayout="row" fxLayout.xs="column" *ngIf="!isLoading">
     <div fxFlex class="content" fxFlexOrder="1" fxFlexOrder.xs="2">
