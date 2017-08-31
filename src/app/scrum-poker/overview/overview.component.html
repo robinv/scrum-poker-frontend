@@ -1,4 +1,37 @@
-<div fxLayout="row" fxFlex fxLayoutWrap>
+<div fxLayout="row" fxFill>
+    <md-list dense fxFill >
+        <h2 md-subheader>Joined Groups</h2>
+        <div *ngFor="let group of getJoinedGroups(groupService.groups)">
+            <md-list-item md-ripple [routerLink]="['group', group.id]">
+                <md-icon mdListIcon *ngIf="group.isPokerActive" mdTooltip="Scrum Poker is in progress" class="group-icon--active">play_circle_outlined</md-icon>
+                <md-icon mdListIcon *ngIf="!group.isPokerActive" mdTooltip="Scrum Poker is not in progress" class="group-icon--inactive">pause_circle_outlined</md-icon>
+                <h3 md-line>{{group.name}}</h3>
+                <p md-line>
+                    <span>{{userService.getById(group.userId).name}}</span>
+                </p>
+            </md-list-item>
+            <md-divider></md-divider>
+        </div>
+        <h2 md-subheader>Available Groups</h2>
+        <div *ngFor="let group of getUnjoinedGroups(groupService.groups)">
+            <md-list-item  (click)="joinGroup(group)" >
+                <md-icon mdListIcon *ngIf="group.isPokerActive" mdTooltip="Scrum Poker is in progress" class="group-icon--active">play_circle_outlined</md-icon>
+                <md-icon mdListIcon *ngIf="!group.isPokerActive" mdTooltip="Scrum Poker is not in progress" class="group-icon--inactive">pause_circle_outlined</md-icon>
+                <h3 md-line>{{group.name}}</h3>
+                <p md-line>
+                    <span>{{userService.getById(group.userId).name}}</span>
+                </p>
+            </md-list-item>
+            <md-divider></md-divider>
+        </div>
+        
+    </md-list>
+</div>
+<br/>
+<div fxLayout="row" fxFill fxLayoutAlign="end end">
+    <button md-raised-button color="primary" routerLink="/scrum-poker/create-group">Create Group</button>
+</div>
+    <!--
     <div fxFlex="calc(50% - 10px)" fxFlex.xs="calc(100% - 10px)">
         <md-card class="card">
             <md-card-content>
@@ -52,6 +85,6 @@
                 </md-list>
             </md-card-content>
         </md-card>
+-->
 
-</div>
 

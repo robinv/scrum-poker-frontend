@@ -26,6 +26,22 @@ export class OverviewComponent {
         });
     }
 
+    public getJoinedGroups(items: Array<Group>) {
+        return items.filter(group => {
+            if (this.isJoinedGroup(group.id)) {
+                return group;
+            }
+        });
+    }
+
+    public getUnjoinedGroups(items: Array<Group>) {
+        return items.filter(group => {
+            if (!this.isJoinedGroup(group.id)) {
+                return group;
+            }
+        });
+    }
+
     public getOrderedGroups(items: Array<Group>) {
         return items.sort((a, b) => {
             if (Object.is(this.isJoinedGroup(a.id), this.isJoinedGroup(b.id))) {

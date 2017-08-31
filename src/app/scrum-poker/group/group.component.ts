@@ -3,6 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../shared/user.service';
 import { GroupService } from '../shared/group.service';
 import { Group } from '../shared/group.model';
+import { User } from '../shared/user.model';
+import { Bet } from '../shared/bet.model';
 import { OwnUser } from '../shared/own-user.model';
 
 @Component({
@@ -17,6 +19,7 @@ export class GroupComponent implements OnInit {
     public possibleBets: Number[] = [
         1, 2, 3, 5, 8, 13, 20, 30, 40, 100
     ];
+    public _lastBet: Number;
 
     constructor(
         public userService: UserService,
@@ -34,6 +37,12 @@ export class GroupComponent implements OnInit {
 
             this.group = this._groupService.getById(params.id);
             this.ownUser = this.userService.getOwnUser();
+        });
+    }
+
+    public hasPlacedBet(bets: Array<Bet>, userId: String): Bet {
+        return bets.find(bet => {
+            return bet.userId === userId;
         });
     }
 
@@ -56,6 +65,10 @@ export class GroupComponent implements OnInit {
     }
 
     public placeBet(bet: Number): void {
-        this._groupService.placeBet(this.group, bet);
+        this._groupService.placeBet(this.group, bet, response => {
+            if ('status' in response && response.status == 200) {
+                this._lastBet = bet;
+            }
+        });
     }
 }
