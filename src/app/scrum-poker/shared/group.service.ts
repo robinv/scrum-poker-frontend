@@ -305,13 +305,13 @@ export class GroupService implements Resettable, Initializable {
         return user.groupIds.includes(groupId);
     }
 
-    public placeBet(group: Group, bet: Number) {
-        this._webSocketService
+    public placeBet(group: Group, bet: Number, callback: Function) {
+        return this._webSocketService
             .emit('group.poker.bet', {
                 id: group.id,
                 bet: bet
             })
-            .subscribe();
+            .subscribe(response => callback(response));
     }
 
     reset(): void {
