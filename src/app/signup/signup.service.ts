@@ -1,11 +1,8 @@
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/observable/throw';
-
 import { Injectable, OnDestroy } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
 import { environment } from '../../environments/environment';
 import { Http, Response } from '@angular/http';
+import { Observable } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 
 @Injectable()
 export class SignupService implements OnDestroy {
@@ -21,11 +18,13 @@ export class SignupService implements OnDestroy {
                 name,
                 password
             })
-            .map((response: Response) => {
-                return response.text();
-            })
-            .catch((error: Response) => {
-                return Observable.throw(error.text());
-            });
+            .pipe(
+                map((response: Response) => {
+                    return response.text();
+                }),
+                catchError((error: Response) => {
+                    return Observable.throw(error.text());
+                })
+            );
     }
 }

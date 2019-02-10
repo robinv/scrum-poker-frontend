@@ -6,7 +6,7 @@
                 <span>Don't have an account yet?</span>
             </div>
             <div>
-                <button routerLink="/signup" md-raised-button data-color="primary">Signup</button>
+                <button routerLink="/signup" mat-raised-button data-color="primary">Signup</button>
             </div>
         </div>
         <form
@@ -15,34 +15,34 @@
             fxLayout="column"
             fxLayoutGap="10px"
         >
-            <md-input-container>
+            <mat-form-field>
                 <input
                     [disabled]="isLoading"
-                    mdInput
+                    matInput
                     name="name"
                     required
                     placeholder="Name"
                     [(ngModel)]="name"
                 />
-                <md-error>This field is required</md-error>
-            </md-input-container>
-            <md-input-container fxFlex="33" fxFlex.xs="100">
+                <mat-error>This field is required</mat-error>
+            </mat-form-field>
+            <mat-form-field fxFlex="33" fxFlex.xs="100">
                 <input
                     [disabled]="isLoading"
-                    mdInput
+                    matInput
                     required
                     name="password"
                     type="Password"
                     placeholder="Password"
                     [(ngModel)]="password"
                 />
-                <md-error>This field is required</md-error>
-            </md-input-container>
+                <mat-error>This field is required</mat-error>
+            </mat-form-field>
             <div fxLayout="column" fxLayoutGap="10px">
-                <md-error *ngIf="formError">{{formError}}</md-error>
+                <mat-error *ngIf="formError">{{formError}}</mat-error>
                 <div fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="start center">
-                    <button [disabled]="isLoading" md-raised-button data-color="primary">Login</button>
-                    <md-spinner *ngIf="isLoading" mode="indeterminate"></md-spinner>
+                    <button [disabled]="isLoading" mat-raised-button data-color="primary">Login</button>
+                    <mat-spinner *ngIf="isLoading" mode="indeterminate"></mat-spinner>
                 </div>
             </div>
         </form>

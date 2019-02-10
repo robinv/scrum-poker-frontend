@@ -1,5 +1,4 @@
-import 'rxjs/add/operator/finally';
-
+import { finalize } from 'rxjs/operators';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { SignupService } from './signup.service';
 import { AuthService } from '../shared/auth.service';
@@ -39,9 +38,11 @@ export class SignupComponent implements OnDestroy, OnInit {
         this.isLoading = true;
         this._signupService
             .create(this.name, this.password)
-            .finally(() => {
-                this.isLoading = false;
-            })
+            .pipe(
+                finalize(() => {
+                    this.isLoading = false;
+                })
+            )
             .subscribe(response => {
                 this._authService.token = response;
                 this._router.navigate(['scrum-poker']);

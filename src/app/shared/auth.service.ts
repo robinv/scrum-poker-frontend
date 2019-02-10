@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Resettable } from './resettable.interface';
-import { User } from '../scrum-poker/shared/user.model';
-import { JwtHelper } from 'angular2-jwt';
+import { JwtHelperService } from '@auth0/angular-jwt';
 import { Router } from '@angular/router';
 
 @Injectable()
@@ -9,12 +8,12 @@ export class AuthService implements Resettable {
     private _token: String;
     private _decodedToken: any;
     private _userId: String;
-    private _jwtHelper: JwtHelper;
+    private _jwtHelper: JwtHelperService;
 
     constructor(
         private router: Router
     ) {
-        this._jwtHelper = new JwtHelper();
+        this._jwtHelper = new JwtHelperService();
         const storageToken = localStorage.getItem('token');
 
         if (storageToken) {

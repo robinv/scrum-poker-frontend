@@ -6,23 +6,23 @@
     fxLayout="column"
     fxLayoutGap="10px"
 >
-    <md-input-container>
+    <mat-form-field>
         <input
             [disabled]="isLoading"
-            mdInput
+            matInput
             name="password"
             required
             type="password"
             placeholder="Password"
             [(ngModel)]="password"
         />
-        <md-error>This field is required</md-error>
-    </md-input-container>
+        <mat-error>This field is required</mat-error>
+    </mat-form-field>
     <div fxLayout="column" fxLayoutGap="10px">
-        <md-error *ngIf="formError">{{formError}}</md-error>
+        <mat-error *ngIf="formError">{{formError}}</mat-error>
         <div fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="start center">
-            <button [disabled]="isLoading" md-raised-button data-color="primary">Login</button>
-            <md-spinner *ngIf="isLoading" mode="indeterminate"></md-spinner>
+            <button [disabled]="isLoading" mat-raised-button data-color="primary">Login</button>
+            <mat-spinner *ngIf="isLoading" mode="indeterminate"></mat-spinner>
         </div>
     </div>
 </form>
