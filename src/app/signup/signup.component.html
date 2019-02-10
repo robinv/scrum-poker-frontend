@@ -1,10 +1,10 @@
 <div class="content">
     <h3>Sign Up</h3>
     <form #signupForm="ngForm" (ngSubmit)="onSubmit(signupForm)" fxLayout="column" fxLayoutGap="10px">
-        <md-input-container>
+        <mat-form-field>
             <input
                 [disabled]="isLoading"
-                mdInput
+                matInput
                 name="name"
                 placeholder="Name"
                 minlength="3"
@@ -12,12 +12,12 @@
                 required
                 [(ngModel)]="name"
             />
-            <md-error>The name must contain between 3 and 64 characters.</md-error>
-        </md-input-container>
-        <md-input-container>
+            <mat-error>The name must contain between 3 and 64 characters.</mat-error>
+        </mat-form-field>
+        <mat-form-field>
             <input
                 [disabled]="isLoading"
-                mdInput
+                matInput
                 name="password"
                 type="password"
                 required
@@ -25,13 +25,13 @@
                 [(ngModel)]="password"
                 minlength="8"
             />
-            <md-error>The password must contain at least 8 characters.</md-error>
-        </md-input-container>
+            <mat-error>The password must contain at least 8 characters.</mat-error>
+        </mat-form-field>
         <div fxLayout="column" fxLayoutGap="10px">
-            <md-error *ngIf="formError">{{formError}}</md-error>
+            <mat-error *ngIf="formError">{{formError}}</mat-error>
             <div fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="start center">
-                <button [disabled]="isLoading" md-raised-button data-color="primary">Sign Up</button>
-                <md-spinner *ngIf="isLoading" mode="indeterminate"></md-spinner>
+                <button [disabled]="isLoading" mat-raised-button data-color="primary">Sign Up</button>
+                <mat-spinner *ngIf="isLoading" mode="indeterminate"></mat-spinner>
             </div>
         </div>
     </form>

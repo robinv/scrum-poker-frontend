@@ -1,5 +1,4 @@
-import 'rxjs/add/operator/finally';
-
+import { finalize } from 'rxjs/operators';
 import { Component } from '@angular/core';
 import { LoginService } from './login.service';
 import { Router } from '@angular/router';
@@ -31,9 +30,11 @@ export class LoginComponent {
         this.isLoading = true;
         this.loginService
             .login(this.name, this.password)
-            .finally(() => {
-                this.isLoading = false;
-            })
+            .pipe(
+                finalize(() => {
+                    this.isLoading = false;
+                })
+            )
             .subscribe(response => {
                 this.authService.token = response;
                 this.router.navigate(['scrum-poker']);

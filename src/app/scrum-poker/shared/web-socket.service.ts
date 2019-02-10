@@ -1,7 +1,6 @@
 import * as io from 'socket.io-client';
-
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { Resettable } from '../../shared/resettable.interface';
 import { AuthService } from '../../shared/auth.service';

@@ -1,5 +1,4 @@
-import 'rxjs/add/operator/finally';
-
+import { finalize } from 'rxjs/operators';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { GroupService } from '../shared/group.service';
@@ -29,9 +28,11 @@ export class CreateGroupComponent {
 
         this._groupService
             .create(this.name, this.password)
-            .finally(() => {
-                this.isLoading = false;
-            })
+            .pipe(
+                finalize(() => {
+                    this.isLoading = false;
+                })
+            )
             .subscribe(() => {
                 this._router.navigate(['scrum-poker']);
             }, error => {

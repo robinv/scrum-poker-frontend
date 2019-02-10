@@ -1,16 +1,14 @@
-import 'rxjs/add/operator/takeUntil';
-
 import { Injectable } from '@angular/core';
 import { User } from './user.model';
 import { Resettable } from '../../shared/resettable.interface';
 import { WebSocketService } from './web-socket.service';
-import { Subject } from 'rxjs/Subject';
 import { Initializable } from '../../shared/initializable.interface';
 import { environment } from '../../../environments/environment';
 import { AuthService } from '../../shared/auth.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable, Subject } from 'rxjs';
 import { Http, Response, Headers } from '@angular/http';
 import { OwnUser } from './own-user.model';
+import { flatMap, catchError, takeUntil, map } from 'rxjs/operators';
 
 @Injectable()
 export class UserService implements Resettable, Initializable {
@@ -31,29 +29,33 @@ export class UserService implements Resettable, Initializable {
     public init(): Observable<any> {
         this.reset();
         return this._loadUsers()
-            .map((users: Array<User>) => {
-                this._users = users;
-                this._initListeners();
-                return users;
-            })
-            .flatMap(() => {
-                return new Observable(observer => {
-                    this._webSocketService
-                        .emit('user.groups', {})
-                        .subscribe(result => {
-                            const ownUser = this.getOwnUser();
-                            ownUser.groupIds = result.message;
-                            observer.next();
-                            observer.complete();
-                        });
-                });
-            });
+            .pipe(
+                map((users: Array<User>) => {
+                    this._users = users;
+                    this._initListeners();
+                    return users;
+                }),
+                flatMap(() => {
+                    return new Observable(observer => {
+                        this._webSocketService
+                            .emit('user.groups', {})
+                            .subscribe(result => {
+                                const ownUser = this.getOwnUser();
+                                ownUser.groupIds = result.message;
+                                observer.next();
+                                observer.complete();
+                            });
+                    });
+                })
+            )
     }
 
     private _initListeners() {
         this._webSocketService
             .getObservable('user.joined')
-            .takeUntil(this._destroySubject)
+            .pipe(
+                takeUntil(this._destroySubject)
+            )
             .subscribe(item => {
                 let user = this.getById(item.id);
                 if (user) {
@@ -67,7 +69,9 @@ export class UserService implements Resettable, Initializable {
 
         this._webSocketService
             .getObservable('user.left')
-            .takeUntil(this._destroySubject)
+            .pipe(
+                takeUntil(this._destroySubject)
+            )
             .subscribe(item => {
                 const user = this.getById(item.id);
                 if (user) {
@@ -86,38 +90,40 @@ export class UserService implements Resettable, Initializable {
             .get(`${environment.api.protocol}://${environment.api.url}/users`, {
                 headers: headers
             })
-            .flatMap((response: Response) => {
-                return new Observable(observer => {
-                    const users = response
-                        .json()
-                        .map(userData => {
-                            return this._createUserObject(userData.id, userData.name);
-                        });
-                    observer.next(users);
-                    observer.complete();
-                });
-            })
-            .flatMap((users: Array<User>) => {
-                return new Observable(observer => {
-                    this._webSocketService
-                        .emit('user.list', {})
-                        .subscribe(result => {
-                            result.message.forEach(item => {
-                                const existingUser = users.find(user => {
-                                    return Object.is(item.id, user.id);
-                                });
-                                if (existingUser) {
-                                    existingUser.online = true;
-                                }
+            .pipe(
+                flatMap((response: Response) => {
+                    return new Observable<Array<User>>(observer => {
+                        const users = response
+                            .json()
+                            .map(userData => {
+                                return this._createUserObject(userData.id, userData.name);
                             });
-                            observer.next(users);
-                            observer.complete();
-                        });
-                });
-            })
-            .catch((error: Response) => {
-                return Observable.throw(error.text());
-            });
+                        observer.next(users);
+                        observer.complete();
+                    });
+                }),
+                flatMap((users: Array<User>) => {
+                    return new Observable<Array<User>>(observer => {
+                        this._webSocketService
+                            .emit('user.list', {})
+                            .subscribe(result => {
+                                result.message.forEach(item => {
+                                    const existingUser = users.find(user => {
+                                        return Object.is(item.id, user.id);
+                                    });
+                                    if (existingUser) {
+                                        existingUser.online = true;
+                                    }
+                                });
+                                observer.next(users);
+                                observer.complete();
+                            });
+                    });
+                }),
+                catchError((error: Response) => {
+                    return Observable.throw(error.text());
+                })
+            );
     }
 
     public getById(id: String): User {

@@ -1,7 +1,6 @@
-import 'rxjs/add/operator/finally';
-
+import { finalize } from 'rxjs/operators';
 import { Component, Inject } from '@angular/core';
-import { MD_DIALOG_DATA, MdDialogRef, MdSnackBar } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar } from '@angular/material';
 import { ControlContainer } from '@angular/forms';
 import { GroupService } from '../../shared/group.service';
 import { UserService } from '../../shared/user.service';
@@ -17,10 +16,10 @@ export class JoinGroupDialogComponent {
 
     constructor(
         private _groupService: GroupService,
-        private _snackBar: MdSnackBar,
-        private _mdDialogRef: MdDialogRef<JoinGroupDialogComponent>,
+        private _snackBar: MatSnackBar,
+        private _mdDialogRef: MatDialogRef<JoinGroupDialogComponent>,
         private _userService: UserService,
-        @Inject(MD_DIALOG_DATA) public data: any
+        @Inject(MAT_DIALOG_DATA) public data: any
     ) {}
 
     public onSubmit(groupJoinForm: ControlContainer): void {
@@ -31,9 +30,11 @@ export class JoinGroupDialogComponent {
         this.isLoading = true;
 
         this._groupService.join(this.data.groupId, this.password)
-            .finally(() => {
-                this.isLoading = false;
-            })
+            .pipe(
+                finalize(() => {
+                    this.isLoading = false;
+                })
+            )
             .subscribe(() => {
                 this._userService.getOwnUser().addGroupId(this.data.groupId);
                 this._snackBar.open('Group successfully joined', null, {

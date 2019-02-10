@@ -3,7 +3,7 @@ import { UserService } from '../shared/user.service';
 import { GroupService } from '../shared/group.service';
 import { Group } from '../shared/group.model';
 import { User } from '../shared/user.model';
-import { MdDialog } from '@angular/material';
+import { MatDialog } from '@angular/material';
 import { JoinGroupDialogComponent } from './join-group-dialog/join-group-dialog.component';
 
 @Component({
@@ -17,7 +17,7 @@ export class OverviewComponent {
     constructor(
         public userService: UserService,
         public groupService: GroupService,
-        private _dialog: MdDialog
+        private _dialog: MatDialog
     ) {}
 
     public getOrderedUsers(items: Array<User>) {

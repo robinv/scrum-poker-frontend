@@ -2,9 +2,9 @@
     <h3>Create Group</h3>
     <div fxLayout="column" fxLayoutGap="50px">
         <form #createGroupForm="ngForm" (ngSubmit)="onSubmit(createGroupForm)" fxLayout="column" fxLayoutGap="10px">
-            <md-input-container>
+            <mat-form-field>
                 <input
-                    mdInput
+                    matInput
                     name="groupName"
                     minlength="3"
                     maxlength="64"
@@ -12,11 +12,11 @@
                     placeholder="Group Name"
                     [(ngModel)]="name"
                 />
-                <md-error>The name must contain between 3 and 64 characters.</md-error>
-            </md-input-container>
-            <md-input-container fxFlex="33" fxFlex.sm="100">
+                <mat-error>The name must contain between 3 and 64 characters.</mat-error>
+            </mat-form-field>
+            <mat-form-field fxFlex="33" fxFlex.sm="100">
                 <input
-                    mdInput
+                    matInput
                     required
                     minlength="8"
                     name="groupPassword"
@@ -24,13 +24,13 @@
                     placeholder="Group Password"
                     [(ngModel)]="password"
                 />
-                <md-error>The password must contain at least 8 characters.</md-error>
-            </md-input-container>
+                <mat-error>The password must contain at least 8 characters.</mat-error>
+            </mat-form-field>
             <div fxLayout="column" fxLayoutGap="10px">
-                <md-error *ngIf="formError">{{formError}}</md-error>
+                <mat-error *ngIf="formError">{{formError}}</mat-error>
                 <div fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="start center">
-                    <button [disabled]="isLoading" md-raised-button data-color="primary">Create Group</button>
-                    <md-spinner *ngIf="isLoading" mode="indeterminate"></md-spinner>
+                    <button [disabled]="isLoading" mat-raised-button data-color="primary">Create Group</button>
+                    <mat-spinner *ngIf="isLoading" mode="indeterminate"></mat-spinner>
                 </div>
             </div>
         </form>

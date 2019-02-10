@@ -1,11 +1,8 @@
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/observable/throw';
-
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { Http, Response } from '@angular/http';
+import { map, catchError } from 'rxjs/operators';
 
 @Injectable()
 export class LoginService {
@@ -20,11 +17,13 @@ export class LoginService {
                 name,
                 password
             })
-            .map((response: Response) => {
-                return response.text();
-            })
-            .catch((error: Response) => {
-                return Observable.throw(error.text());
-            });
+            .pipe(
+                map((response: Response) => {
+                    return response.text();
+                }),
+                catchError((error: Response) => {
+                    return Observable.throw(error.text());
+                })
+            );
     }
 }

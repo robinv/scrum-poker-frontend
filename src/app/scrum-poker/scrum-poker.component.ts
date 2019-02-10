@@ -1,15 +1,12 @@
-import 'rxjs/add/observable/forkJoin';
-import 'rxjs/add/operator/takeUntil';
-
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from '../shared/auth.service';
 import { WebSocketService } from './shared/web-socket.service';
 import { UserService } from './shared/user.service';
 import { GroupService } from './shared/group.service';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
-import { MdSnackBar } from '@angular/material';
+import { forkJoin, Subject } from 'rxjs';
+import { MatSnackBar } from '@angular/material';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
     selector: 'app-scrum-poker',
@@ -28,7 +25,7 @@ export class ScrumPokerComponent implements OnDestroy, OnInit {
         private _groupListService: GroupService,
         private _webSocketService: WebSocketService,
         private _router: Router,
-        private _snackBar: MdSnackBar
+        private _snackBar: MatSnackBar
     ) {}
 
     public ngOnInit(): void {
@@ -40,7 +37,7 @@ export class ScrumPokerComponent implements OnDestroy, OnInit {
                 const userListInit = this.userService.init();
                 const groupListInit = this._groupListService.init();
 
-                Observable.forkJoin([userListInit, groupListInit])
+                forkJoin([userListInit, groupListInit])
                     .subscribe(() => {
                         this.onLoadingFinished();
                     });
@@ -56,7 +53,9 @@ export class ScrumPokerComponent implements OnDestroy, OnInit {
 
         this._webSocketService
             .getObservable('group.poker.started')
-            .takeUntil(this._destroySubject)
+            .pipe(
+                takeUntil(this._destroySubject)
+            )
             .subscribe(item => {
                 const group = this._groupListService.getById(item.id);
                 if (group) {
@@ -72,7 +71,9 @@ export class ScrumPokerComponent implements OnDestroy, OnInit {
 
         this._webSocketService
             .getObservable('group.poker.ended')
-            .takeUntil(this._destroySubject)
+            .pipe(
+                takeUntil(this._destroySubject)
+            )
             .subscribe(item => {
                 const group = this._groupListService.getById(item.id);
                 if (group) {

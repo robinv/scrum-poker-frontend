@@ -14,7 +14,7 @@ import { SignupService } from './signup/signup.service';
 import { HttpModule } from '@angular/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
-    MdButtonModule, MdInputModule, MdMenuModule, MdProgressSpinnerModule, MdToolbarModule
+    MatButtonModule, MatInputModule, MatMenuModule, MatProgressSpinnerModule, MatToolbarModule
 } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
@@ -31,11 +31,11 @@ import { FlexLayoutModule } from '@angular/flex-layout';
         FormsModule,
         HttpModule,
         BrowserAnimationsModule,
-        MdButtonModule,
-        MdInputModule,
-        MdMenuModule,
-        MdProgressSpinnerModule,
-        MdToolbarModule,
+        MatButtonModule,
+        MatInputModule,
+        MatMenuModule,
+        MatProgressSpinnerModule,
+        MatToolbarModule,
         FlexLayoutModule
     ],
     providers: [

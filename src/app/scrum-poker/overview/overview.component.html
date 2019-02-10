@@ -1,57 +1,57 @@
 <div fxLayout="row" fxFlex fxLayoutWrap>
     <div fxFlex="calc(50% - 10px)" fxFlex.xs="calc(100% - 10px)">
-        <md-card class="card">
-            <md-card-content>
-                <md-card-subtitle>{{userService.getOnlineUsers().length}} Users online</md-card-subtitle>
-                <md-card-content>
-                    <md-list>
-                        <md-list-item *ngFor="let user of getOrderedUsers(userService.getOnlineUsers())">
-                            <h3 md-line>
+        <mat-card class="card">
+            <mat-card-content>
+                <mat-card-subtitle>{{userService.getOnlineUsers().length}} Users online</mat-card-subtitle>
+                <mat-card-content>
+                    <mat-list>
+                        <mat-list-item *ngFor="let user of getOrderedUsers(userService.getOnlineUsers())">
+                            <h3 mat-line>
                                 <strong *ngIf="userService.isOwnUser(user)">{{user.name}}</strong>
                                 <span *ngIf="!userService.isOwnUser(user)">{{user.name}}</span>
                             </h3>
-                        </md-list-item>
-                    </md-list>
-                </md-card-content>
-                <md-card-subtitle>
+                        </mat-list-item>
+                    </mat-list>
+                </mat-card-content>
+                <mat-card-subtitle>
                     {{userService.getOfflineUsers().length}} Users offline
-                </md-card-subtitle>
-                <md-card-content>
-                    <md-list>
-                        <md-list-item *ngFor="let user of getOrderedUsers(userService.getOfflineUsers())">
-                            <h3 md-line>{{user.name}}</h3>
-                        </md-list-item>
-                    </md-list>
-                </md-card-content>
-            </md-card-content>
-        </md-card>
+                </mat-card-subtitle>
+                <mat-card-content>
+                    <mat-list>
+                        <mat-list-item *ngFor="let user of getOrderedUsers(userService.getOfflineUsers())">
+                            <h3 mat-line>{{user.name}}</h3>
+                        </mat-list-item>
+                    </mat-list>
+                </mat-card-content>
+            </mat-card-content>
+        </mat-card>
     </div>
-        <md-card class="card" fxFlex="calc(50% - 10px)" fxFlex.xs="calc(100% - 10px)">
-            <md-card-content>
-                <button md-raised-button color="primary" routerLink="/scrum-poker/create-group">Create Group</button>
-            </md-card-content>
-            <md-card-subtitle>{{groupService.groups.length}} groups available</md-card-subtitle>
-            <md-card-content>
-                <md-list>
-                    <md-list-item *ngFor="let group of getOrderedGroups(groupService.groups)">
-                        <h3 md-line>{{group.name}}</h3>
-                        <p md-line>
+        <mat-card class="card" fxFlex="calc(50% - 10px)" fxFlex.xs="calc(100% - 10px)">
+            <mat-card-content>
+                <button mat-raised-button color="primary" routerLink="/scrum-poker/create-group">Create Group</button>
+            </mat-card-content>
+            <mat-card-subtitle>{{groupService.groups.length}} groups available</mat-card-subtitle>
+            <mat-card-content>
+                <mat-list>
+                    <mat-list-item *ngFor="let group of getOrderedGroups(groupService.groups)">
+                        <h3 mat-line>{{group.name}}</h3>
+                        <p mat-line>
                             <span>{{userService.getById(group.userId).name}}</span>
                         </p>
                         <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="start center">
-                            <button [routerLink]="['group', group.id]" md-raised-button *ngIf="isJoinedGroup(group.id)" data-color="primary">
+                            <button [routerLink]="['group', group.id]" mat-raised-button *ngIf="isJoinedGroup(group.id)" data-color="primary">
                                 Enter
                             </button>
-                            <button (click)="joinGroup(group)" md-raised-button *ngIf="!isJoinedGroup(group.id)">
+                            <button (click)="joinGroup(group)" mat-raised-button *ngIf="!isJoinedGroup(group.id)">
                                 Join
                             </button>
-                            <md-icon *ngIf="group.isPokerActive" mdTooltip="Scrum Poker is in progress" class="group-icon--active">play_circle_outlined</md-icon>
-                            <md-icon *ngIf="!group.isPokerActive" mdTooltip="Scrum Poker is not in progress" class="group-icon--inactive">pause_circle_outlined</md-icon>
+                            <mat-icon *ngIf="group.isPokerActive" mdTooltip="Scrum Poker is in progress" class="group-icon--active">play_circle_outlined</mat-icon>
+                            <mat-icon *ngIf="!group.isPokerActive" mdTooltip="Scrum Poker is not in progress" class="group-icon--inactive">pause_circle_outlined</mat-icon>
                         </div>
-                    </md-list-item>
-                </md-list>
-            </md-card-content>
-        </md-card>
+                    </mat-list-item>
+                </mat-list>
+            </mat-card-content>
+        </mat-card>
 
 </div>
 
